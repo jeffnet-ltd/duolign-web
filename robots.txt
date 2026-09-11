@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://duolign.co.uk/sitemap.xml

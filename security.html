@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security &amp; Encryption — Duolign</title>
+<meta name="description" content="How Duolign protects your household's financial data — encryption, Open Banking, and account security.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='2' y1='4' x2='30' y2='28'%3E%3Cstop stop-color='%2338BDF8'/%3E%3Cstop offset='.54' stop-color='%236366F1'/%3E%3Cstop offset='1' stop-color='%239333EA'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2.5' y='6' width='15' height='15' rx='5' fill='none' stroke='url(%23g)' stroke-width='2.6'/%3E%3Crect x='14.5' y='11' width='15' height='15' rx='5' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><defs><linearGradient id="mg" x1="2" y1="4" x2="30" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset="0.54" stop-color="#6366F1"/><stop offset="1" stop-color="#9333EA"/></linearGradient></defs><rect x="2.5" y="6" width="15" height="15" rx="5" stroke="url(#mg)" stroke-width="2.6"/><rect x="14.5" y="11" width="15" height="15" rx="5" fill="url(#mg)"/></svg>
+      Duolign
+    </a>
+    <a class="bar-cta" href="/#join">Join the beta</a>
+  </div>
+</header>
+
+<main>
+  <section class="legal-hero">
+    <div class="wrap col">
+      <span class="eyebrow">Legal</span>
+      <h2 style="margin-top:14px">Security &amp; Encryption</h2>
+      <p class="updated">Last updated 11 September 2026</p>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="wrap col">
+
+      <p>
+        Duolign handles two people's real financial data. Here's specifically how it's protected
+        &mdash; not a marketing summary, the actual mechanisms.
+      </p>
+
+      <h2>Encryption</h2>
+      <p>
+        All traffic between the app and our servers runs over TLS. Data at rest &mdash; your
+        household's balances, transactions, bills, and every other record &mdash; is encrypted
+        using AES-256, provided by our database infrastructure (Supabase, on AWS).
+      </p>
+
+      <h2>Open Banking: read-only, by construction</h2>
+      <p>
+        Bank connections go through an FCA-authorised Account Information Services Provider
+        (AISP). This is an <strong>Account Information</strong> connection, not a Payment
+        Initiation one &mdash; the permission model itself makes it impossible for Duolign to
+        move money, only to read balances and transactions you've explicitly authorised.
+      </p>
+      <p>
+        Authorisation happens on your bank's own login page, using their standard secure sign-in
+        (including your bank's own 2-factor step). Duolign never sees, asks for, or stores your
+        online banking username, password, or PIN. You can revoke access at any time, in your
+        banking app or in Duolign's Settings, and it takes effect immediately.
+      </p>
+
+      <h2>Your private data stays private &mdash; enforced at the database, not just the screen</h2>
+      <p>
+        If you mark an account private, it isn't just hidden in the interface: it's stored in a
+        separate, per-user partition of the database that your partner's login is structurally
+        unable to query, even directly. A UI bug or a future feature can't accidentally expose it,
+        because your partner's session has no path to that data at all.
+      </p>
+
+      <h2>Account &amp; device security</h2>
+      <ul>
+        <li>Sign-in is handled by Supabase Auth (email + password, or your chosen provider).</li>
+        <li>The app can be locked with Face ID, Touch ID, or Android biometrics, with a device PIN as the fallback &mdash; set once per device, never sent to our servers.</li>
+        <li>A joint decision &mdash; changing a shared target, for example &mdash; requires a confirming tap from both partners' devices before it takes effect.</li>
+      </ul>
+
+      <h2>You can erase everything yourself, on demand</h2>
+      <p>
+        From Settings, you can permanently delete your household (every record, for both of you)
+        or just your own account (your login and private data; your partner's data stays intact
+        for them, if they've joined). Both are immediate, real deletions &mdash; not a flag that
+        hides the data while it's kept around.
+      </p>
+
+      <h2>Infrastructure</h2>
+      <p>Duolign is built on a small number of established providers, each processing data only as needed to run the service:</p>
+      <ul>
+        <li><strong>Supabase</strong> (database, authentication, encrypted file storage) &mdash; hosted in the EU.</li>
+        <li>Our <strong>Open Banking AISP partner</strong> &mdash; the regulated bank-connection layer.</li>
+        <li><strong>Google Firebase</strong> &mdash; push notification delivery only.</li>
+      </ul>
+
+      <h2>Reporting a security issue</h2>
+      <p>
+        If you believe you've found a security vulnerability in Duolign, please tell us before
+        telling anyone else: <a class="inline" href="mailto:security@duolign.co.uk">security@duolign.co.uk</a>.
+        We take reports seriously and will respond promptly.
+      </p>
+
+      <p style="margin-top:28px">See also our <a class="inline" href="privacy.html">Privacy Policy</a> and <a class="inline" href="terms.html">Terms of Service</a>.</p>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="security.html">Security &amp; Encryption</a>
+    </div>
+    <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; <span id="yr">2026</span> JeffNet Ltd.</p>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
