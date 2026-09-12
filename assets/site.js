@@ -42,7 +42,7 @@ function wireSignupForm(form) {
     button.textContent = 'Joining…';
     const { error: dbError } = await client.from('beta_signups').insert({ email, source });
     button.disabled = false;
-    button.textContent = form.id === 'join' ? 'Join the closed beta' : 'Join the closed beta';
+    button.textContent = 'Join the waitlist';
     if (dbError) {
       if (error) { error.hidden = false; error.textContent = "Something went wrong — please try again."; }
       return;
