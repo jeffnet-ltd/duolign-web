@@ -231,6 +231,39 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .closing .form-note, .closing .trust { justify-content: center; }
 .closing .form-done { margin-left: auto; margin-right: auto; }
 
+/* ---- pricing ---- */
+.pricing-hero { padding: 56px 0 20px; border-bottom: 1px solid var(--edge-soft); }
+.pricing-hero .lede { margin-top: 14px; font-size: 1.08rem; color: var(--ink-2); max-width: 36em; }
+
+.plans { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 620px; }
+.plan { border: 1px solid var(--edge); border-radius: 16px; padding: 22px 20px; background: var(--raise); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+.plan.featured { border-color: color-mix(in srgb, var(--accent-b) 45%, var(--edge)); background: var(--raise-strong); position: relative; }
+.plan .save {
+  position: absolute; top: -11px; right: 18px;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em; color: #fff;
+  background: var(--grad); padding: 4px 10px; border-radius: 999px;
+}
+.plan .name { font-weight: 600; font-size: 0.92rem; color: var(--ink-2); }
+.plan .price { display: flex; align-items: baseline; gap: 6px; }
+.plan .price .amt { font-family: "IBM Plex Mono", monospace; font-size: 2.1rem; color: var(--ink); letter-spacing: -0.02em; }
+.plan .price .per { font-size: 0.92rem; color: var(--ink-3); }
+.plan .vat { font-size: 0.78rem; color: var(--ink-3); margin-top: -8px; }
+.plan .works-out { font-size: 0.82rem; color: var(--ink-2); }
+.plan ul { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-direction: column; gap: 9px; font-size: 0.9rem; color: var(--ink-2); }
+.plan ul li { display: grid; grid-template-columns: 15px 1fr; gap: 9px; align-items: start; }
+.plan ul li svg { margin-top: 3px; color: var(--good); flex: none; }
+.plan .btn-primary { margin-top: 4px; width: 100%; text-align: center; }
+
+.vouchers { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 700px; }
+.voucher { border: 1px solid var(--edge); border-radius: 12px; padding: 16px 15px; background: var(--raise); }
+.voucher .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
+.voucher .v { font-family: "IBM Plex Mono", monospace; font-size: 1.28rem; margin-top: 8px; color: var(--ink); }
+.voucher .m { font-size: 0.82rem; color: var(--ink-2); margin-top: 4px; }
+
+@media (max-width: 620px) {
+  .plans, .vouchers { grid-template-columns: 1fr; }
+}
+
 /* ---- legal pages ---- */
 .legal-hero { padding: 56px 0 20px; border-bottom: 1px solid var(--edge-soft); }
 .legal-hero .updated { margin-top: 10px; font-size: 0.88rem; color: var(--ink-3); }
