@@ -251,8 +251,12 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .plan .works-out { font-size: 0.82rem; color: var(--ink-2); }
 .plan ul { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-direction: column; gap: 9px; font-size: 0.9rem; color: var(--ink-2); }
 .plan ul li { display: grid; grid-template-columns: 15px 1fr; gap: 9px; align-items: start; }
-.plan ul li svg { margin-top: 3px; color: var(--good); flex: none; }
+.plan ul li svg { width: 15px; height: 15px; margin-top: 3px; color: var(--good); flex: none; }
 .plan .btn-primary { margin-top: 4px; width: 100%; text-align: center; }
+
+.check-list { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; color: var(--ink-2); max-width: 44em; }
+.check-list li { display: grid; grid-template-columns: 16px 1fr; gap: 10px; align-items: start; }
+.check-list li svg { width: 16px; height: 16px; margin-top: 3px; color: var(--good); flex: none; }
 
 .vouchers { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 700px; }
 .voucher { border: 1px solid var(--edge); border-radius: 12px; padding: 16px 15px; background: var(--raise); }
