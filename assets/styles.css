@@ -220,7 +220,11 @@ form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-o
 .trust span { display: inline-flex; align-items: center; gap: 7px; }
 .trust svg { flex: none; }
 
-/* ---- the checklist : the one object that gets a card ---- */
+.hero-shot { margin: 46px 0 8px; }
+.hero-shot img { width: 100%; height: auto; display: block; }
+
+/* ---- the checklist : the one object that gets a card (currently
+   unused -- kept in case the hero visual reverts) ---- */
 .ledger {
   margin: 46px 0 8px;
   border: 1px solid var(--edge);
