@@ -122,6 +122,12 @@ header {
   transition: border-color .15s ease, background .15s ease;
 }
 .bar-cta:hover { border-color: var(--ink-3); background: var(--raise); }
+.bar-links { display: none; align-items: center; gap: 22px; }
+.bar-links a { font-size: 0.9rem; color: var(--ink-2); text-decoration: none; }
+.bar-links a:hover { color: var(--ink); }
+@media (min-width: 621px) {
+  .bar-links { display: flex; }
+}
 
 /* ---- hero ---- */
 .hero { padding: 74px 0 30px; }
@@ -161,6 +167,27 @@ form.signup select {
   color: var(--ink-2);
 }
 form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+
+/* ---- two-step signup: step divs render as plain flex children of
+   form.signup (so every rule above just keeps working), Step 2 stays
+   removed from layout via [hidden] until JS reveals it. ---- */
+.signup-step1, .signup-step2 { display: contents; }
+.signup-step1[hidden], .signup-step2[hidden] { display: none; }
+.step2-intro { flex-basis: 100%; font-size: 0.85rem; color: var(--ink-3); margin: 4px 0 0; }
+.checkbox-field {
+  flex-basis: 100%;
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 0.85rem; color: var(--ink-2);
+  margin-top: 2px;
+}
+.checkbox-field input { margin-top: 3px; flex: none; }
+.signup-step2-actions { flex-basis: 100%; display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.btn-skip {
+  font: inherit; font-size: 0.88rem; color: var(--ink-3);
+  background: none; border: 0; cursor: pointer; padding: 6px 2px;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.btn-skip:hover { color: var(--ink-2); }
 .btn-primary {
   font: inherit; font-weight: 600; font-size: 1rem;
   color: #fff;
@@ -228,6 +255,16 @@ ul.points li { display: grid; grid-template-columns: 20px 1fr; gap: 14px; }
 ul.points li svg { margin-top: 4px; color: var(--accent-b); flex: none; }
 ul.points .h { font-weight: 600; color: var(--ink); }
 ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
+.step-num {
+  width: 20px; height: 20px; flex: none; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--raise);
+  border: 1px solid var(--edge);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem; font-weight: 600;
+  color: var(--ink-2);
+}
 
 .compare { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 460px; }
 .compare .c { border: 1px solid var(--edge); border-radius: 12px; padding: 14px 15px; background: var(--raise); }

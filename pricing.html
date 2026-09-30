@@ -20,6 +20,9 @@
       <img class="mark" src="assets/mark.png" alt="">
       Duolign
     </a>
+    <nav class="bar-links">
+      <a href="index.html#how-it-works">How it works</a>
+    </nav>
     <a class="bar-cta" href="/#join">Join the waitlist</a>
   </div>
 </header>
@@ -134,32 +137,42 @@
       <span class="eyebrow beta-status" style="justify-content:center">Duolign Early Access &mdash; inviting 50 UK couples &middot; free during the closed beta</span>
       <h2 style="margin-top:16px">Get your household aligned.</h2>
       <form class="signup" id="join" novalidate data-source="pricing">
-        <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
-        <button type="submit" class="btn-primary">Join the waitlist</button>
-        <div class="signup-research">
-          <select name="partner_status" aria-label="Are you managing finances with a partner?">
+        <div class="signup-step1">
+          <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
+          <button type="submit" class="btn-primary">Join the waitlist</button>
+        </div>
+        <div class="signup-step2" hidden>
+          <p class="step2-intro">A couple of quick questions (optional) &mdash; helps us build the right thing.</p>
+          <select name="partner_status" aria-label="Are you currently managing household finances with a partner?">
             <option value="">Managing finances with a partner?</option>
             <option value="yes">Yes</option>
+            <option value="not_yet">Not yet, but moving in soon</option>
             <option value="no">No</option>
-            <option value="planning">Not yet, but planning to</option>
           </select>
-          <select name="split_style" aria-label="How do you currently split expenses?">
+          <select name="split_style" aria-label="How do you currently split household expenses?">
             <option value="">How do you split expenses?</option>
-            <option value="50_50">50/50</option>
+            <option value="50_50">50/50 equal split</option>
             <option value="proportional">Proportional to income</option>
             <option value="one_person">One person pays most</option>
-            <option value="wing_it">We wing it</option>
+            <option value="wing_it">We just wing it / mental arithmetic</option>
             <option value="other">Other</option>
           </select>
-          <select name="current_tools" aria-label="What do you currently use to manage this?">
+          <select name="current_tools" aria-label="What do you currently use to manage shared money?">
             <option value="">What do you use today?</option>
-            <option value="spreadsheet">Spreadsheet</option>
+            <option value="spreadsheet">Spreadsheet (Excel / Google Sheets)</option>
             <option value="banking_app">Banking app</option>
             <option value="splitwise">Splitwise</option>
-            <option value="notes">Notes</option>
+            <option value="notes">Notes app / WhatsApp</option>
             <option value="nothing">Nothing</option>
-            <option value="other">Other</option>
           </select>
+          <label class="checkbox-field">
+            <input type="checkbox" name="feedback_opt_in">
+            <span>Would you and your partner be open to a quick 15-minute feedback chat, in exchange for 3 months free once Duolign launches?</span>
+          </label>
+          <div class="signup-step2-actions">
+            <button type="submit" class="btn-primary">Join the waitlist</button>
+            <button type="button" class="btn-skip" data-action="skip">Skip</button>
+          </div>
         </div>
       </form>
       <p class="form-note" id="join-note">UK households only. We&rsquo;ll email you when we launch &mdash; nothing else.</p>
