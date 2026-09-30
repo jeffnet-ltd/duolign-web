@@ -28,7 +28,7 @@
   <section class="hero">
     <div class="wrap">
       <div class="col">
-        <span class="badge reveal"><span class="dot"></span>Launching soon · UK couples, iOS &amp; Android</span>
+        <span class="badge reveal"><span class="dot"></span><span class="beta-status">Duolign Early Access &mdash; inviting 50 UK couples &middot; free during the closed beta</span></span>
         <h1 class="reveal d1">Your household money, <span class="grad-text">finally aligned.</span></h1>
         <p class="lede reveal d2">
           The mobile command centre for UK couples. Every account in one view, a payday
@@ -39,6 +39,31 @@
         <form class="signup" id="join" novalidate data-source="landing">
           <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
           <button type="submit" class="btn-primary">Join the waitlist</button>
+          <div class="signup-research">
+            <select name="partner_status" aria-label="Are you managing finances with a partner?">
+              <option value="">Managing finances with a partner?</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="planning">Not yet, but planning to</option>
+            </select>
+            <select name="split_style" aria-label="How do you currently split expenses?">
+              <option value="">How do you split expenses?</option>
+              <option value="50_50">50/50</option>
+              <option value="proportional">Proportional to income</option>
+              <option value="one_person">One person pays most</option>
+              <option value="wing_it">We wing it</option>
+              <option value="other">Other</option>
+            </select>
+            <select name="current_tools" aria-label="What do you currently use to manage this?">
+              <option value="">What do you use today?</option>
+              <option value="spreadsheet">Spreadsheet</option>
+              <option value="banking_app">Banking app</option>
+              <option value="splitwise">Splitwise</option>
+              <option value="notes">Notes</option>
+              <option value="nothing">Nothing</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
         </form>
         <p class="form-note" id="join-note">UK households only. We&rsquo;ll email you when we launch &mdash; nothing else.</p>
         <p class="form-error" id="join-error" hidden></p>
@@ -234,11 +259,36 @@
 
   <section class="closing" id="join-2">
     <div class="wrap">
-      <span class="eyebrow" style="justify-content:center">Launching soon</span>
+      <span class="eyebrow beta-status" style="justify-content:center">Duolign Early Access &mdash; inviting 50 UK couples &middot; free during the closed beta</span>
       <h2 style="margin-top:16px">Get your household aligned.</h2>
       <form class="signup" id="join2" novalidate data-source="landing-closing">
         <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
         <button type="submit" class="btn-primary">Join the waitlist</button>
+        <div class="signup-research">
+          <select name="partner_status" aria-label="Are you managing finances with a partner?">
+            <option value="">Managing finances with a partner?</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="planning">Not yet, but planning to</option>
+          </select>
+          <select name="split_style" aria-label="How do you currently split expenses?">
+            <option value="">How do you split expenses?</option>
+            <option value="50_50">50/50</option>
+            <option value="proportional">Proportional to income</option>
+            <option value="one_person">One person pays most</option>
+            <option value="wing_it">We wing it</option>
+            <option value="other">Other</option>
+          </select>
+          <select name="current_tools" aria-label="What do you currently use to manage this?">
+            <option value="">What do you use today?</option>
+            <option value="spreadsheet">Spreadsheet</option>
+            <option value="banking_app">Banking app</option>
+            <option value="splitwise">Splitwise</option>
+            <option value="notes">Notes</option>
+            <option value="nothing">Nothing</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
       </form>
       <p class="form-note" id="join2-note">iOS &amp; Android at launch &middot; UK households only.</p>
       <p class="form-error" id="join2-error" hidden></p>

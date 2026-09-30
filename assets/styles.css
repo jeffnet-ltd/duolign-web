@@ -150,6 +150,17 @@ form.signup input {
 }
 form.signup input::placeholder { color: var(--ink-3); }
 form.signup input:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+.signup-research { flex-basis: 100%; display: flex; gap: 9px; flex-wrap: wrap; margin-top: 2px; }
+form.signup select {
+  flex: 1 1 200px;
+  font: inherit; font-size: 14px;
+  padding: 11px 13px;
+  border-radius: 11px;
+  border: 1px solid var(--edge);
+  background: var(--ground-2);
+  color: var(--ink-2);
+}
+form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
 .btn-primary {
   font: inherit; font-weight: 600; font-size: 1rem;
   color: #fff;
