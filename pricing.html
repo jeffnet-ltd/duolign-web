@@ -131,11 +131,36 @@
 
   <section class="closing">
     <div class="wrap col">
-      <span class="eyebrow" style="justify-content:center">Launching soon</span>
+      <span class="eyebrow beta-status" style="justify-content:center">Duolign Early Access &mdash; inviting 50 UK couples &middot; free during the closed beta</span>
       <h2 style="margin-top:16px">Get your household aligned.</h2>
       <form class="signup" id="join" novalidate data-source="pricing">
         <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
         <button type="submit" class="btn-primary">Join the waitlist</button>
+        <div class="signup-research">
+          <select name="partner_status" aria-label="Are you managing finances with a partner?">
+            <option value="">Managing finances with a partner?</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="planning">Not yet, but planning to</option>
+          </select>
+          <select name="split_style" aria-label="How do you currently split expenses?">
+            <option value="">How do you split expenses?</option>
+            <option value="50_50">50/50</option>
+            <option value="proportional">Proportional to income</option>
+            <option value="one_person">One person pays most</option>
+            <option value="wing_it">We wing it</option>
+            <option value="other">Other</option>
+          </select>
+          <select name="current_tools" aria-label="What do you currently use to manage this?">
+            <option value="">What do you use today?</option>
+            <option value="spreadsheet">Spreadsheet</option>
+            <option value="banking_app">Banking app</option>
+            <option value="splitwise">Splitwise</option>
+            <option value="notes">Notes</option>
+            <option value="nothing">Nothing</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
       </form>
       <p class="form-note" id="join-note">UK households only. We&rsquo;ll email you when we launch &mdash; nothing else.</p>
       <p class="form-error" id="join-error" hidden></p>
