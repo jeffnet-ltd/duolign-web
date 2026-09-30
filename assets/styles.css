@@ -1,7 +1,14 @@
 /* Duolign marketing site -- shared styles. Tokens mirror the app's own
    design language (frontend/src/index.css in the Couple_finance_app repo):
    dark-first, the blue->indigo->violet accent gradient, monospace for
-   every money figure, a slate text ramp. */
+   every money figure, a slate text ramp.
+
+   Referenced everywhere as assets/styles.css?v=<date> (site.js the same
+   way) -- GitHub Pages/Fastly cache each file independently for 10
+   minutes (Cache-Control: max-age=600), so a deploy that changes both
+   HTML and this file could otherwise serve a visitor a stale copy of
+   one alongside a fresh copy of the other for up to that long. Bump the
+   ?v= date on every HTML page when either file changes. */
 
 :root {
   --ground: #F7F8FA;
@@ -221,7 +228,7 @@ form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-o
 .trust svg { flex: none; }
 
 .hero-shot { margin: 46px 0 8px; }
-.hero-shot img { width: 100%; height: auto; display: block; }
+.hero-shot img { width: 100%; max-width: 100%; height: auto; display: block; }
 
 /* ---- the checklist : the one object that gets a card (currently
    unused -- kept in case the hero visual reverts) ---- */
