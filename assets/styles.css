@@ -322,6 +322,11 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .voucher .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
 .voucher .v { font-family: "IBM Plex Mono", monospace; font-size: 1.28rem; margin-top: 8px; color: var(--ink); }
 .voucher .m { font-size: 0.82rem; color: var(--ink-2); margin-top: 4px; }
+.voucher .btn-primary {
+  display: block; width: 100%; margin-top: 14px;
+  padding: 9px 12px; font-size: 0.85rem; border-radius: 9px;
+  text-align: center; text-decoration: none;
+}
 
 @media (max-width: 620px) {
   .plans, .vouchers { grid-template-columns: 1fr; }
