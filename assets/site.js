@@ -103,6 +103,65 @@ function wireSignupForm(form) {
 wireSignupForm(document.getElementById('join'));
 wireSignupForm(document.getElementById('join2'));
 
+// delete-data.html's request form -- App Store review's web-reachable
+// deletion path, for someone who'd rather not reinstall the app just to
+// leave. Inserts into `deletion_requests` (Couple_finance_app's
+// db/migrations/0019_deletion_requests.sql), the SAME anon-insert-only
+// RLS pattern as beta_signups above -- this key can add a row, never
+// read the queue back. A Supabase Database Webhook on that table emails
+// the owner, and the admin dashboard lists it for them to resolve by
+// hand (never automatic -- someone's real financial data, verified
+// before it's erased).
+function wireDeletionForm(form) {
+  if (!form) return;
+  const note = document.getElementById(form.id + '-note');
+  const error = document.getElementById(form.id + '-error');
+  const done = document.getElementById(form.id + '-done');
+  const emailInput = form.querySelector('input[type=email]');
+  const messageInput = form.querySelector('textarea');
+  const submitBtn = form.querySelector('button[type=submit]');
+
+  function validEmail() {
+    const email = (emailInput.value || '').trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailInput.focus();
+      emailInput.style.borderColor = '#dc2626';
+      return null;
+    }
+    emailInput.style.borderColor = '';
+    return email;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = validEmail();
+    if (!email) return;
+    if (error) error.hidden = true;
+    if (!client) {
+      if (error) { error.hidden = false; error.textContent = "Couldn't reach our database — please email support@duolign.co.uk instead."; }
+      return;
+    }
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    const { error: dbError } = await client.from('deletion_requests').insert({
+      email,
+      message: (messageInput?.value || '').trim() || null,
+    });
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+    if (dbError) {
+      if (error) { error.hidden = false; error.textContent = "Something went wrong — please email support@duolign.co.uk instead."; }
+      return;
+    }
+    form.hidden = true;
+    if (note) note.hidden = true;
+    if (done) done.hidden = false;
+  });
+}
+
+wireDeletionForm(document.getElementById('delete-form'));
+
 // Beta-capacity copy swap. The HTML's own `.beta-status` text is already
 // the correct, honest default ("open" copy) -- this only ever UPGRADES
 // it to the "full" copy once real_household_count() (db/migrations/

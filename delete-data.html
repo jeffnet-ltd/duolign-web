@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete My Data — Duolign</title>
+<meta name="description" content="Request deletion of your Duolign account and household data without needing the app.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css?v=20260930">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img class="mark" src="assets/mark.png" alt="">
+      Duolign
+    </a>
+    <a class="bar-cta" href="/#join">Join the waitlist</a>
+  </div>
+</header>
+
+<main>
+  <section class="legal-hero">
+    <div class="wrap col">
+      <span class="eyebrow">Legal</span>
+      <h2 style="margin-top:14px">Delete My Data</h2>
+      <p class="updated">For when you'd rather not reinstall the app just to leave</p>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="wrap col">
+
+      <p>
+        If you still have the app, the fastest way is in-app: <strong>Settings &rarr; delete this
+        household</strong> or <strong>delete my account</strong> &mdash; both take effect
+        immediately, and either way you can export your data first. See our
+        <a class="inline" href="privacy.html#rights">Privacy Policy</a> for exactly what each one
+        erases.
+      </p>
+      <p>
+        Don't have the app installed, or would rather not? Use the form below instead. This isn't
+        instant &mdash; we verify it's really you before erasing anything, same as any other
+        request to delete a real household's financial data &mdash; but we'll follow up at the
+        email you give us.
+      </p>
+
+      <form class="delete-form" id="delete-form" novalidate>
+        <label for="delete-email" style="font-size:0.85rem;color:var(--ink-2)">Your account email</label>
+        <input type="email" id="delete-email" name="email" placeholder="you@example.com" aria-label="Your account email" required>
+        <label for="delete-message" style="font-size:0.85rem;color:var(--ink-2)">Anything else we should know? (optional)</label>
+        <textarea id="delete-message" name="message" placeholder="E.g. just my account, or the whole household"></textarea>
+        <button type="submit" class="btn-primary">Request deletion</button>
+      </form>
+      <p class="form-note" id="delete-form-note">We'll reply from support@duolign.co.uk once it's handled.</p>
+      <p class="form-error" id="delete-form-error" hidden></p>
+      <div class="form-done" id="delete-form-done" hidden>
+        Request received &mdash; we'll follow up at the email you gave us shortly.
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="pricing.html">Pricing</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="security.html">Security &amp; Encryption</a>
+    </div>
+    <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; <span id="yr">2026</span> JeffNet Ltd.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/site.js?v=20260930"></script>
+</body>
+</html>

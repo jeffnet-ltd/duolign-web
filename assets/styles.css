@@ -227,6 +227,24 @@ form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-o
 .trust span { display: inline-flex; align-items: center; gap: 7px; }
 .trust svg { flex: none; }
 
+/* delete-data.html's request form -- stacked, not the marketing hero's
+   inline row, but reuses .btn-primary/.form-note/.form-error/.form-done
+   as-is (already generic, not scoped to form.signup). */
+form.delete-form { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
+form.delete-form input, form.delete-form textarea {
+  font: inherit; font-size: 16px;
+  padding: 13px 15px;
+  border-radius: 11px;
+  border: 1px solid var(--edge);
+  background: var(--ground-2);
+  color: var(--ink);
+  resize: vertical;
+}
+form.delete-form textarea { min-height: 90px; }
+form.delete-form input::placeholder, form.delete-form textarea::placeholder { color: var(--ink-3); }
+form.delete-form input:focus-visible, form.delete-form textarea:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+form.delete-form .btn-primary { align-self: flex-start; }
+
 .hero-shot { margin: 46px 0 8px; }
 .hero-shot img { width: 100%; max-width: 100%; height: auto; display: block; }
 

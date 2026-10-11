@@ -29,7 +29,7 @@
     <div class="wrap col">
       <span class="eyebrow">Legal</span>
       <h2 style="margin-top:14px">Privacy Policy</h2>
-      <p class="updated">Last updated 11 September 2026 · Applies to the Duolign app and duolign.co.uk</p>
+      <p class="updated">Last updated 11 October 2026 · Applies to the Duolign app and duolign.co.uk</p>
     </div>
   </section>
 
@@ -50,6 +50,7 @@
         <ol>
           <li><a href="#data">What we collect</a></li>
           <li><a href="#openbanking">Open Banking data, specifically</a></li>
+          <li><a href="#ai">AI-assisted statement reading</a></li>
           <li><a href="#why">Why we use it, and our legal basis</a></li>
           <li><a href="#sharing">Who sees it</a></li>
           <li><a href="#retention">How long we keep it</a></li>
@@ -87,7 +88,28 @@
         Settings &mdash; disconnecting stops all future access immediately.
       </p>
 
-      <h2 id="why">3. Why we use it, and our legal basis</h2>
+      <h2 id="ai">3. AI-assisted statement reading</h2>
+      <p>
+        If you upload a PDF bank statement from a bank we don't yet read with a dedicated,
+        rule-based parser, its text is read by an AI language model instead, to extract a list
+        of transactions. This is a model <strong>we run ourselves</strong>, not a third-party AI
+        product &mdash; your statement data is never sent to an external AI company such as
+        OpenAI, Google or Anthropic for this.
+      </p>
+      <p>
+        Before any text reaches the model, we strip out account numbers, sort codes, card
+        numbers, and your name and address automatically &mdash; only the transaction lines
+        themselves (dates, descriptions, amounts) are sent. The model runs on cloud servers
+        located entirely within the <strong>European Economic Area (EEA)</strong>; this data
+        never leaves the EEA for this purpose, and is never used to train any model.
+      </p>
+      <p>
+        The model's output is never trusted on its own: every transaction it returns is checked,
+        deterministically, against the statement's own printed totals before anything is saved.
+        A statement that doesn't reconcile is rejected rather than silently imported wrong.
+      </p>
+
+      <h2 id="why">4. Why we use it, and our legal basis</h2>
       <ul>
         <li><strong>To provide the service</strong> (performance of our contract with you): calculating your household's payday split, tracking bills and debts, running the projections you ask for, and the two-person approval workflow for shared changes.</li>
         <li><strong>To connect your bank</strong> (your explicit consent, given at the point of connecting, separately from this policy): fetching balances and transactions via our AISP partner.</li>
@@ -96,7 +118,7 @@
       </ul>
       <p>We do not use your data for advertising, and we do not sell personal data to anyone, ever.</p>
 
-      <h2 id="sharing">4. Who sees it</h2>
+      <h2 id="sharing">5. Who sees it</h2>
       <p>
         <strong>Your partner</strong> sees the data your household shares by design &mdash; that's the point of a
         joint budget. Anything you mark private stays private: it is stored in a separate
@@ -107,11 +129,12 @@
       <ul>
         <li><strong>Supabase</strong> &mdash; our database and authentication provider, hosted in the EU (AWS, Ireland).</li>
         <li>Our <strong>Open Banking AISP partner</strong> &mdash; brokers the read-only bank connection described above.</li>
+        <li>Our <strong>cloud GPU hosting provider</strong> &mdash; runs the AI model described in section 3, within the EEA only; it never sees who you are, only redacted statement text.</li>
         <li><strong>Google Firebase</strong> &mdash; delivers push notifications to your device.</li>
       </ul>
       <p>None of these providers may use your data for their own purposes. We do not share data with data brokers, advertisers, or any other third party.</p>
 
-      <h2 id="retention">5. How long we keep it</h2>
+      <h2 id="retention">6. How long we keep it</h2>
       <p>
         We keep your household's data for as long as your household is active, so the app keeps working correctly.
         If you close your bank connection, the transaction history already fetched is kept
@@ -119,7 +142,7 @@
         Beta waiting-list emails are kept until the beta ends or you ask us to remove them.
       </p>
 
-      <h2 id="rights">6. Your rights &mdash; including deleting everything yourself</h2>
+      <h2 id="rights">7. Your rights &mdash; including deleting everything yourself</h2>
       <p>Under UK GDPR you have the right to access, correct, delete, restrict, or receive a copy of your personal data, and to object to certain processing. For most of these, you don't need to email anyone:</p>
       <div class="callout">
         <strong>Settings &rarr; delete this household</strong> permanently erases your household's
@@ -129,19 +152,26 @@
         <br>Both take effect immediately and cannot be undone. We recommend exporting your data
         first &mdash; the same screen offers a download.
       </div>
+      <p>
+        Don't have the app installed, or would rather not reinstall it just to leave? Use our
+        <a class="inline" href="delete-data.html">Delete My Data</a> form instead &mdash; we'll
+        verify it's really you, then erase your data the same way.
+      </p>
       <p>For anything else &mdash; a copy of your data, a correction, or a question about how we've used it &mdash; email <a class="inline" href="mailto:privacy@duolign.co.uk">privacy@duolign.co.uk</a>. We'll respond within one month.</p>
 
-      <h2 id="security">7. Security</h2>
+      <h2 id="security">8. Security</h2>
       <p>See our <a class="inline" href="security.html">Security &amp; Encryption</a> page for the detail: encryption in transit and at rest, how bank connections work, and biometric app protection.</p>
 
-      <h2 id="transfers">8. International transfers</h2>
+      <h2 id="transfers">9. International transfers</h2>
       <p>
-        Your data is primarily stored within the EU. Google Firebase (push notifications) may
-        process limited device data outside the UK/EEA; where it does, this happens under
-        Google's standard contractual clauses and equivalent safeguards recognised under UK GDPR.
+        Your data is primarily stored within the EU, including the AI-assisted statement
+        reading described above (section 3), which never leaves the EEA. Google Firebase (push
+        notifications) may process limited device data outside the UK/EEA; where it does, this
+        happens under Google's standard contractual clauses and equivalent safeguards recognised
+        under UK GDPR.
       </p>
 
-      <h2 id="cookies">9. Cookies &amp; this website</h2>
+      <h2 id="cookies">10. Cookies &amp; this website</h2>
       <p>
         This marketing website (duolign.co.uk) does not use tracking or advertising cookies.
         If you join the beta waiting list, your email address is sent directly to our database
@@ -149,13 +179,13 @@
         The Duolign app itself is a native mobile app and does not use browser cookies.
       </p>
 
-      <h2 id="children">10. Children</h2>
+      <h2 id="children">11. Children</h2>
       <p>Duolign is intended for adults (18+) managing a shared household. We do not knowingly collect data from anyone under 18.</p>
 
-      <h2 id="changes">11. Changes to this policy</h2>
+      <h2 id="changes">12. Changes to this policy</h2>
       <p>We'll update the date at the top of this page when this policy changes, and tell you in-app if a change is material.</p>
 
-      <h2 id="contact">12. Contact &amp; complaints</h2>
+      <h2 id="contact">13. Contact &amp; complaints</h2>
       <p>
         Questions or requests: <a class="inline" href="mailto:privacy@duolign.co.uk">privacy@duolign.co.uk</a>.
         If you're unhappy with how we've handled your data, you can also complain to the UK
@@ -175,6 +205,7 @@
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
       <a href="security.html">Security &amp; Encryption</a>
+      <a href="delete-data.html">Delete My Data</a>
     </div>
     <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; <span id="yr">2026</span> JeffNet Ltd.</p>
   </div>
