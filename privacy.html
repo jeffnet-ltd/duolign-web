@@ -101,15 +101,14 @@
       <h2 id="sharing">4. Who sees it</h2>
       <p>
         <strong>Your partner</strong> sees the data your household shares by design &mdash; that's the point of a
-        joint budget. Anything you mark private stays private: it is stored in a separate
-        partition your partner's account cannot read, enforced at the database level, not just
-        hidden in the app's interface.
+        joint budget. Every account in a household is visible to both of you.
       </p>
       <p>We share data with a small number of infrastructure providers who process it on our behalf, under contract, and only as needed to run the service:</p>
       <ul>
         <li><strong>Supabase</strong> &mdash; our database and authentication provider, hosted in the EU (AWS, Ireland).</li>
         <li>Our <strong>cloud GPU hosting provider</strong> &mdash; runs the AI model described in section 2, within the EEA only; it never sees who you are, only redacted statement text.</li>
         <li><strong>Google Firebase</strong> &mdash; delivers push notifications to your device.</li>
+        <li><strong>Sentry</strong> &mdash; receives crash and error reports from the app and our servers so we can fix problems, hosted in the EU (Germany).</li>
       </ul>
       <p>None of these providers may use your data for their own purposes. We do not share data with data brokers, advertisers, or any other third party.</p>
 

@@ -48,14 +48,6 @@
         using AES-256, provided by our database infrastructure (Supabase, on AWS).
       </p>
 
-      <h2>Your private data stays private &mdash; enforced at the database, not just the screen</h2>
-      <p>
-        If you mark an account private, it isn't just hidden in the interface: it's stored in a
-        separate, per-user partition of the database that your partner's login is structurally
-        unable to query, even directly. A UI bug or a future feature can't accidentally expose it,
-        because your partner's session has no path to that data at all.
-      </p>
-
       <h2>Account &amp; device security</h2>
       <ul>
         <li>Sign-in is handled by Supabase Auth (email + password, or your chosen provider).</li>
@@ -67,8 +59,9 @@
       <p>
         From Settings, you can permanently delete your household (every record, for both of you)
         or just your own account (your login and private data; your partner's data stays intact
-        for them, if they've joined). Both are immediate, real deletions &mdash; not a flag that
-        hides the data while it's kept around.
+        for them, if they've joined). Both are real deletions, not a flag that hides the data while
+        it's kept around: the data is permanently erased 30 days later, and until then you can
+        change your mind and cancel from the same screen.
       </p>
 
       <h2>Infrastructure</h2>
@@ -76,6 +69,7 @@
       <ul>
         <li><strong>Supabase</strong> (database, authentication, encrypted file storage) &mdash; hosted in the EU.</li>
         <li><strong>Google Firebase</strong> &mdash; push notification delivery only.</li>
+        <li><strong>Sentry</strong> &mdash; crash and error reports, so we can fix problems &mdash; hosted in the EU.</li>
       </ul>
 
       <h2>Reporting a security issue</h2>
