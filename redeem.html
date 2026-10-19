@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redeem a voucher — Duolign</title>
+<meta name="description" content="Redeem your Duolign Premium voucher.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css?v=20260930">
+<style>
+  /* Redeem page only. Uses the site's own tokens from styles.css. */
+  #redeem-app { display: flex; flex-direction: column; gap: 14px; max-width: 460px; }
+  #redeem-app [hidden] { display: none !important; }
+  #redeem-app form.delete-form { margin-top: 0; }
+  .r-label { font-size: 0.85rem; color: var(--ink-2); }
+  .r-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .r-code { margin: 0; padding: 12px 14px; border-radius: 11px; background: var(--raise-strong); color: var(--ink-2); }
+  .r-code strong { font-family: "IBM Plex Mono", ui-monospace, monospace; color: var(--ink); letter-spacing: 0.02em; word-break: break-all; }
+  .btn-secondary { font: inherit; font-weight: 600; font-size: 0.95rem; padding: 12px 20px; border-radius: 11px; border: 1px solid var(--edge); background: var(--ground-2); color: var(--ink); cursor: pointer; }
+  .btn-secondary:hover { background: var(--raise-strong); }
+  .btn-secondary:disabled { opacity: .6; cursor: default; }
+  .btn-secondary:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 2px; }
+  .r-google { align-self: flex-start; }
+  .r-link { background: none; border: 0; padding: 0; font: inherit; color: var(--accent-b); text-decoration: underline; cursor: pointer; align-self: flex-start; }
+  #redeem-app input[type=text] { font-family: "IBM Plex Mono", ui-monospace, monospace; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img class="mark" src="assets/mark.png" alt="">
+      Duolign
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="legal-hero">
+    <div class="wrap col">
+      <span class="eyebrow">Duolign Premium</span>
+      <h2 style="margin-top:14px">Redeem your voucher</h2>
+      <p class="updated">Premium for your whole household</p>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="wrap col">
+      <div id="redeem-app" aria-live="polite">
+        <noscript><p>This page needs JavaScript switched on.</p></noscript>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="pricing.html">Pricing</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+    <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; 2026 JeffNet Ltd.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="assets/redeem.js?v=20261019"></script>
+</body>
+</html>
