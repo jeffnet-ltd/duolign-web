@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partner page — Duolign</title>
+<meta name="description" content="Sign in to send your complimentary Duolign Premium vouchers to clients.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css?v=20260930">
+<style>
+  /* Partner page only. Uses the site's own tokens from styles.css. */
+  /* Our display rules below would otherwise override the hidden attribute. */
+  #partner-app [hidden] { display: none !important; }
+  #partner-app { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
+  #partner-app h3 { margin: 0; font-size: 1.35rem; }
+  #partner-app h4 { margin: 14px 0 0; font-size: 1rem; }
+  #partner-app ul { margin: 0; padding-left: 1.2em; color: var(--ink-2); }
+  #partner-app li { margin: 4px 0; }
+  .p-label { font-size: 0.85rem; color: var(--ink-2); }
+  .p-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .p-link { background: none; border: 0; padding: 0; font: inherit; font-size: 0.85rem; color: var(--accent-b); text-decoration: underline; cursor: pointer; align-self: flex-start; }
+  .p-note { padding: 12px 14px; border-radius: 11px; background: var(--raise-strong); color: var(--ink-2); font-size: 0.9rem; }
+  .p-check { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: var(--ink-2); cursor: pointer; }
+  .p-check input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; }
+  .p-card { border: 1px solid var(--edge); border-radius: 14px; padding: 14px; background: var(--ground-2); display: flex; flex-direction: column; gap: 8px; }
+  .p-card.p-redeemed { border-color: color-mix(in srgb, var(--good) 45%, var(--edge)); }
+  .p-card.p-expired, .p-card.p-revoked { opacity: 0.6; }
+  .p-code { margin: 0; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.95rem; letter-spacing: 0.02em; word-break: break-all; }
+  .p-status { margin: 0; font-size: 0.85rem; color: var(--ink-2); overflow-wrap: anywhere; }
+  .p-redeemed .p-status { color: var(--good); }
+  form.p-send { display: flex; flex-wrap: wrap; gap: 8px; }
+  form.p-send input { flex: 1 1 220px; min-width: 0; font: inherit; font-size: 16px; padding: 11px 13px; border-radius: 11px; border: 1px solid var(--edge); background: var(--ground); color: var(--ink); }
+  form.p-send input:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+  .p-card .form-error { margin: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img class="mark" src="assets/mark.png" alt="">
+      Duolign
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="legal-hero">
+    <div class="wrap col">
+      <span class="eyebrow">Partner businesses</span>
+      <h2 style="margin-top:14px">Your partner page</h2>
+      <p class="updated">Give your clients a head start on running their money together</p>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="wrap col">
+      <div id="partner-app" aria-live="polite">
+        <noscript><p>This page needs JavaScript switched on.</p></noscript>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="partner-terms.html">Partner Programme Terms</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="security.html">Security &amp; Encryption</a>
+    </div>
+    <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; 2026 JeffNet Ltd.</p>
+  </div>
+</footer>
+
+<script src="assets/partner.js?v=20261019"></script>
+</body>
+</html>

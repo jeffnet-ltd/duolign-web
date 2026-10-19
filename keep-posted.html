@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep me posted — Duolign</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css?v=20260930">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img class="mark" src="assets/mark.png" alt="">
+      Duolign
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="legal-hero">
+    <div class="wrap col">
+      <span class="eyebrow">Duolign offers</span>
+      <h2 style="margin-top:14px">Keep me posted</h2>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="wrap col">
+      <p id="kp-intro">Would you like to hear from Duolign about offers and new features? We'll only email you about this if you say yes, and you can stop any time by emailing <a class="inline" href="mailto:support@duolign.co.uk">support@duolign.co.uk</a>.</p>
+      <button type="button" class="btn-primary" id="kp-yes">Yes, keep me posted</button>
+      <p class="form-error" id="kp-error" hidden></p>
+      <div class="form-done" id="kp-done" hidden></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+    <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; 2026 JeffNet Ltd.</p>
+  </div>
+</footer>
+
+<script>
+// Opting in takes a deliberate click -- arriving on the page records
+// nothing, so a link preview or email scanner opening it can't opt
+// someone in on their behalf.
+(function () {
+  const token = new URLSearchParams(location.search).get('t');
+  const yes = document.getElementById('kp-yes');
+  const error = document.getElementById('kp-error');
+  const done = document.getElementById('kp-done');
+  if (!token) {
+    yes.hidden = true;
+    error.textContent = 'This link is incomplete. Please use the link from your Duolign email.';
+    error.hidden = false;
+    return;
+  }
+  yes.addEventListener('click', async () => {
+    yes.disabled = true;
+    error.hidden = true;
+    try {
+      const resp = await fetch('https://couplefinanceapp-production.up.railway.app/api/partner/keep-posted', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }),
+      });
+      const data = await resp.json().catch(() => null);
+      if (!resp.ok) throw new Error((data && data.detail) || 'Something went wrong. Please try again.');
+      yes.hidden = true;
+      done.textContent = `Thanks, you're on the list (${data.email}). We'll be in touch about Duolign offers.`;
+      done.hidden = false;
+    } catch (ex) {
+      error.textContent = ex.message.startsWith('Failed to fetch') ? "Can't reach Duolign right now. Please try again." : ex.message;
+      error.hidden = false;
+      yes.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
