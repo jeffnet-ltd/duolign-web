@@ -16,6 +16,8 @@
   /* Partner page only. Uses the site's own tokens from styles.css. */
   /* Our display rules below would otherwise override the hidden attribute. */
   #partner-app [hidden] { display: none !important; }
+  /* The site's .legal-body paragraph colour would otherwise win over .form-error. */
+  #partner-app .form-error { color: #dc2626; font-weight: 500; }
   #partner-app { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
   #partner-app h3 { margin: 0; font-size: 1.35rem; }
   #partner-app h4 { margin: 14px 0 0; font-size: 1rem; }
