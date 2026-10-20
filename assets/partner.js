@@ -114,7 +114,8 @@
       el('p', { text: 'Before you send any vouchers, please read and agree to the partner programme terms. The most important points:' }),
       el('ul', {},
         el('li', { text: 'Only send a voucher to a client who has agreed to receive it. You must have their permission to give us their email address.' }),
-        el('li', { text: "Don't send vouchers to yourself, your staff, or your own business email addresses, and send each client only one." }),
+        el('li', { text: "One voucher covers a couple. Send it to just one of them. Their partner gets Premium too when they join the household in the app, so they don't need a voucher of their own." }),
+        el('li', { text: "Don't send vouchers to yourself, your staff, or your own business email addresses." }),
         el('li', { text: 'Vouchers have no cash value and can\'t be sold.' }),
       ),
       el('p', {}, 'Read the full ', el('a', { class: 'inline', href: 'partner-terms.html', target: '_blank', rel: 'noopener', text: 'Partner Business Programme Terms' }), '.'),
@@ -139,7 +140,7 @@
       ? `Sent to ${v.sent_to} on ${fmtDate(v.sent_at)}. Not redeemed yet.`
       : `Not sent yet${v.valid_until ? ` · send and redeem by ${fmtDate(v.valid_until)}` : ''}`;
 
-    const input = el('input', { type: 'email', placeholder: "Client's email address", 'aria-label': `Client's email for ${v.code}` });
+    const input = el('input', { type: 'email', placeholder: "One partner's email", 'aria-label': `Email for ${v.code}: one partner of the couple` });
     const err = errorLine();
     const send = el('button', { type: 'submit', class: 'btn-primary', text: v.sent_to ? 'Resend to this address' : 'Send voucher' });
     const form = el('form', {
@@ -149,7 +150,9 @@
         setError(err, '');
         const email = input.value.trim();
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError(err, "Enter your client's email address.");
-        if (!window.confirm(`Send this voucher to ${email}? Only send it if they've agreed to receive it. It will only work for that address.`)) return;
+        if (!window.confirm(`Send this voucher to ${email}?
+
+Only send it if they've agreed to receive it. It only works for that address, and it covers the whole couple, so don't send their partner a separate voucher.`)) return;
         send.disabled = true;
         try {
           await call(`/vouchers/${encodeURIComponent(v.code)}/send`, { method: 'POST', body: { email } });
@@ -160,7 +163,7 @@
           send.disabled = false;
         }
       },
-    }, input, send);
+    }, el('p', { class: 'p-hint', text: "One voucher per couple: enter just one partner's email." }), input, send);
     card.append(form, err);
     if (v.sent_to) {
       card.append(el('button', {
@@ -183,7 +186,7 @@
         el('h3', { text: me.business_name }),
         el('button', { type: 'button', class: 'p-link', text: 'Sign out', onclick: () => signOut() }),
       ),
-      el('p', { text: "Enter a client's email address and we'll email them their voucher on your behalf, with a link to redeem it. Each voucher gives the couple 3 months of Duolign Premium, starting when they redeem it, and only works for the email address you send it to." }),
+      el('p', {}, el('strong', { text: 'Each voucher is for one couple.' }), " Send it to just one of them: enter that person's email address and we'll email them their voucher on your behalf, with a link to redeem it. It gives the couple 3 months of Duolign Premium, starting when they redeem it. Their partner gets Premium too when they join the household in the app, so don't send them a separate voucher."),
       discount,
       el('h4', { text: 'Complimentary vouchers' }),
       ...comp.map(voucherCard),
