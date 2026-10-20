@@ -31,48 +31,70 @@
   }
 
   // -- Signed out ------------------------------------------------------------
-  function renderSignIn(message) {
+  // Opens in "create an account" mode: a client redeeming a voucher most
+  // likely doesn't have a Duolign account yet. The password they choose
+  // here is the one they'll use in the app, so it's entered twice.
+  function renderSignIn(message, mode = 'create') {
+    const creating = mode === 'create';
     const email = el('input', { type: 'email', id: 'r-email', autocomplete: 'email', placeholder: 'you@example.com', required: true });
-    const password = el('input', { type: 'password', id: 'r-password', autocomplete: 'current-password', placeholder: 'Password', required: true, minlength: 8 });
+    const password = el('input', {
+      type: 'password', id: 'r-password', required: true, minlength: 8,
+      autocomplete: creating ? 'new-password' : 'current-password',
+      placeholder: creating ? 'At least 8 characters' : 'Password',
+    });
+    const confirm = creating
+      ? el('input', { type: 'password', id: 'r-password2', autocomplete: 'new-password', placeholder: 'Type it again', required: true })
+      : null;
     const err = errorLine();
     const done = el('div', { class: 'form-done', hidden: true });
-    const signIn = el('button', { type: 'submit', class: 'btn-primary', text: 'Sign in' });
-    const create = el('button', { type: 'button', class: 'btn-secondary', text: 'Create an account' });
+    const submit = el('button', { type: 'submit', class: 'btn-primary', text: creating ? 'Create account' : 'Sign in' });
 
-    async function run(kind) {
+    async function run() {
       setError(err, '');
-      if (!email.value.trim() || password.value.length < 8) return setError(err, 'Enter your email and a password of at least 8 characters.');
-      signIn.disabled = create.disabled = true;
+      const address = email.value.trim();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(address)) return setError(err, 'Enter your email address.');
+      if (password.value.length < 8) return setError(err, 'Your password needs at least 8 characters.');
+      if (creating && password.value !== confirm.value) return setError(err, "The two passwords don't match. Please type them again.");
+      submit.disabled = true;
       try {
-        if (kind === 'in') {
-          const { error } = await supabase.auth.signInWithPassword({ email: email.value.trim(), password: password.value });
-          if (error) throw error;
-        } else {
+        if (creating) {
           const { data, error } = await supabase.auth.signUp({
-            email: email.value.trim(), password: password.value,
+            email: address, password: password.value,
             options: { emailRedirectTo: location.href },
           });
           if (error) throw error;
           if (!data.session) {
             form.hidden = true;
-            done.textContent = `Check ${email.value.trim()} for a link to confirm your account. It brings you back here to redeem your voucher.`;
+            switcher.hidden = true;
+            google.hidden = true;
+            done.textContent = `Check ${address} for a link to confirm your account. It brings you back here to redeem your voucher.`;
             done.hidden = false;
             return;
           }
+        } else {
+          const { error } = await supabase.auth.signInWithPassword({ email: address, password: password.value });
+          if (error) throw error;
         }
         render();
       } catch (ex) {
         setError(err, ex.message || 'Something went wrong. Please try again.');
       } finally {
-        signIn.disabled = create.disabled = false;
+        submit.disabled = false;
       }
     }
 
-    const form = el('form', { class: 'delete-form', novalidate: true, onsubmit: (e) => { e.preventDefault(); run('in'); } },
+    const form = el('form', { class: 'delete-form', novalidate: true, onsubmit: (e) => { e.preventDefault(); run(); } },
       el('label', { for: 'r-email', class: 'r-label', text: 'Email' }), email,
-      el('label', { for: 'r-password', class: 'r-label', text: 'Password' }), password,
-      el('div', { class: 'r-row' }, signIn, create));
-    create.addEventListener('click', () => run('up'));
+      el('label', { for: 'r-password', class: 'r-label', text: creating ? 'Choose a password' : 'Password' }), password,
+      creating ? el('label', { for: 'r-password2', class: 'r-label', text: 'Confirm your password' }) : null, confirm,
+      submit);
+
+    const switcher = el('p', { class: 'form-note' },
+      creating ? 'Already have a Duolign account? ' : 'New to Duolign? ',
+      el('button', {
+        type: 'button', class: 'r-link', text: creating ? 'Sign in instead' : 'Create an account',
+        onclick: () => renderSignIn(null, creating ? 'signin' : 'create'),
+      }));
 
     const google = el('button', {
       type: 'button', class: 'btn-secondary r-google', text: 'Continue with Google',
@@ -83,12 +105,16 @@
     });
 
     show(
-      el('p', { text: 'Sign in to the Duolign account you use (or will use) in the app, then redeem your voucher. Premium covers your whole household, so your partner gets it too.' }),
+      el('p', { text: creating
+        ? "Create your Duolign account to redeem your voucher. You'll use this email and password to sign in to the Duolign app. Premium covers your whole household, so your partner gets it too."
+        : 'Sign in with your Duolign account to redeem your voucher. Premium covers your whole household, so your partner gets it too.' }),
       codeNote(),
+      el('p', { class: 'form-note', text: 'If your voucher was emailed to you, use that same email address. The voucher only works for it.' }),
       message ? el('p', { class: 'form-error', text: message }) : null,
-      el('p', { class: 'form-note', text: 'If your voucher was emailed to you, sign in with that same email address. The voucher only works for it.' }),
-      form, google, err, done,
+      err,
+      form, switcher, google, done,
     );
+    email.focus();
   }
 
   // -- Signed in -------------------------------------------------------------
@@ -111,7 +137,7 @@
             body: JSON.stringify({ code }),
           });
           const data = await resp.json().catch(() => null);
-          if (resp.status === 401) return renderSignIn('Your session has ended. Please sign in again.');
+          if (resp.status === 401) return renderSignIn('Your session has ended. Please sign in again.', 'signin');
           if (!resp.ok) throw new Error((data && data.detail) || 'Something went wrong. Please try again.');
           renderDone(data.status);
         } catch (ex) {
