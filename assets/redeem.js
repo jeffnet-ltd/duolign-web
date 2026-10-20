@@ -9,7 +9,18 @@
   const root = document.getElementById('redeem-app');
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const params = new URLSearchParams(location.search);
-  let code = (params.get('code') || '').trim().toUpperCase();
+  // Sign-up confirmation emails and Google sign-in come back to this page.
+  // Supabase only honours a return address that's on its allow-list, and
+  // the voucher code in the query string stopped it matching -- it fell
+  // back to the app instead. So: return to the bare page, and remember the
+  // code in the browser to fill it back in.
+  const RETURN_URL = location.origin + location.pathname;
+  const CODE_KEY = 'duolign_redeem_code';
+  const remember = (c) => { try { if (c) localStorage.setItem(CODE_KEY, c); } catch { /* private mode */ } };
+  const recall = () => { try { return localStorage.getItem(CODE_KEY) || ''; } catch { return ''; } };
+  const forget = () => { try { localStorage.removeItem(CODE_KEY); } catch { /* ignore */ } };
+  let code = (params.get('code') || recall()).trim().toUpperCase();
+  remember(code);
 
   function el(tag, attrs = {}, ...children) {
     const node = document.createElement(tag);
@@ -60,14 +71,14 @@
         if (creating) {
           const { data, error } = await supabase.auth.signUp({
             email: address, password: password.value,
-            options: { emailRedirectTo: location.href },
+            options: { emailRedirectTo: RETURN_URL },
           });
           if (error) throw error;
           if (!data.session) {
             form.hidden = true;
             switcher.hidden = true;
             google.hidden = true;
-            done.textContent = `Check ${address} for a link to confirm your account. It brings you back here to redeem your voucher.`;
+            done.textContent = `Check ${address} for a link to confirm your account. Open it on this device and it brings you back here to redeem your voucher.`;
             done.hidden = false;
             return;
           }
@@ -99,7 +110,7 @@
     const google = el('button', {
       type: 'button', class: 'btn-secondary r-google', text: 'Continue with Google',
       onclick: async () => {
-        const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } });
+        const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: RETURN_URL } });
         if (error) setError(err, error.message);
       },
     });
@@ -139,13 +150,15 @@
           const data = await resp.json().catch(() => null);
           if (resp.status === 401) return renderSignIn('Your session has ended. Please sign in again.', 'signin');
           if (!resp.ok) throw new Error((data && data.detail) || 'Something went wrong. Please try again.');
+          forget();
           renderDone(data.status);
         } catch (ex) {
           setError(err, ex.message === 'Failed to fetch' ? "Can't reach Duolign right now. Please try again." : ex.message);
           button.disabled = false;
         }
       },
-    }, el('label', { for: 'r-code', class: 'r-label', text: 'Voucher code' }), input, button);
+    }, el('label', { for: 'r-code', class: 'r-label', text: 'Voucher code' }), input,
+      code ? null : el('p', { class: 'form-note', text: "It's in the email your voucher came in, starting DUOLIGN-." }), button);
     show(
       el('p', {}, 'Signed in as ', el('strong', { text: session.user.email || 'your account' }), '. ',
         el('button', { type: 'button', class: 'r-link', text: 'Not you?', onclick: signOut })),
