@@ -177,10 +177,24 @@ Only send it if they've agreed to receive it. It only works for that address, an
   function renderDashboard(me) {
     const comp = me.vouchers.filter((v) => v.kind === 'complimentary');
     const packs = me.vouchers.filter((v) => v.kind !== 'complimentary');
-    const discount = me.discount_unlocked
-      ? el('div', { class: 'form-done' }, `You've sent all ${me.complimentary_total} complimentary vouchers, so you've unlocked 20% off your first voucher pack. We'll email you your code, and it will appear here too. Use it by ${fmtDate(me.discount_deadline)}.`)
-      : el('div', { class: 'p-note' },
-        `Send all ${me.complimentary_total} by ${fmtDate(me.distribution_deadline)} to unlock 20% off your first voucher pack (${me.complimentary_sent} of ${me.complimentary_total} sent). Your clients don't need to have redeemed them.`);
+    const now = new Date();
+    let discount;
+    if (me.discount_code && me.discount_used) {
+      discount = el('div', { class: 'p-note', text: "You've used your 20% first-pack discount. Thank you!" });
+    } else if (me.discount_code) {
+      discount = el('div', { class: 'form-done' },
+        el('p', { class: 'p-disc-head', text: "You've unlocked 20% off your first voucher pack" }),
+        el('p', { class: 'p-disc-code', text: me.discount_code }),
+        el('p', {}, 'Enter it at checkout when you ', el('a', { class: 'inline', href: 'pricing.html', text: 'buy a voucher pack' }),
+          `. It works once, until ${fmtDate(me.discount_deadline)}. We've emailed it to you too.`));
+    } else if (me.discount_unlocked) {
+      discount = el('div', { class: 'form-done', text: `You've sent all ${me.complimentary_total} complimentary vouchers, so you've unlocked 20% off your first voucher pack. Your code will appear here in a moment, and we'll email it to you.` });
+    } else if (new Date(me.distribution_deadline) < now) {
+      discount = el('div', { class: 'p-note', text: `The window to unlock the first-pack discount closed on ${fmtDate(me.distribution_deadline)}. Your remaining vouchers still work: send them whenever you're ready.` });
+    } else {
+      discount = el('div', { class: 'p-note',
+        text: `Send all ${me.complimentary_total} by ${fmtDate(me.distribution_deadline)} to unlock 20% off your first voucher pack (${me.complimentary_sent} of ${me.complimentary_total} sent). Your clients don't need to have redeemed them.` });
+    }
     show(
       el('div', { class: 'p-head' },
         el('h3', { text: me.business_name }),
