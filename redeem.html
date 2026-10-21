@@ -16,6 +16,8 @@
   /* Redeem page only. Uses the site's own tokens from styles.css. */
   #redeem-app { display: flex; flex-direction: column; gap: 14px; max-width: 460px; }
   #redeem-app [hidden] { display: none !important; }
+  .r-check { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: var(--ink-2); cursor: pointer; }
+  .r-check input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; }
   /* The site's .legal-body paragraph colour would otherwise win over .form-error. */
   #redeem-app .form-error { color: #dc2626; font-weight: 500; }
   #redeem-app form.delete-form { margin-top: 0; }
@@ -73,6 +75,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="assets/redeem.js?v=20261020b"></script>
+<script src="assets/redeem.js?v=20261021a"></script>
 </body>
 </html>

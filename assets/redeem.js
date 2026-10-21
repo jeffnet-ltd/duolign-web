@@ -133,6 +133,9 @@
     const input = el('input', { type: 'text', id: 'r-code', autocomplete: 'off', placeholder: 'DUOLIGN-XXXX-XXXX-XXXX', value: code, required: true });
     const err = errorLine();
     const button = el('button', { type: 'submit', class: 'btn-primary', text: 'Redeem voucher' });
+    // Marketing opt-in (stage 8): unticked unless they tick it; sent only
+    // once the voucher has gone through.
+    const optIn = el('input', { type: 'checkbox', id: 'r-optin' });
     const form = el('form', {
       class: 'delete-form', novalidate: true,
       onsubmit: async (e) => {
@@ -151,6 +154,13 @@
           if (resp.status === 401) return renderSignIn('Your session has ended. Please sign in again.', 'signin');
           if (!resp.ok) throw new Error((data && data.detail) || 'Something went wrong. Please try again.');
           forget();
+          if (optIn.checked) {
+            fetch(`${API}/marketing-consent`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+              body: JSON.stringify({ opt_in: true, source: 'redeem_page' }),
+            }).catch(() => {});
+          }
           renderDone(data.status);
         } catch (ex) {
           setError(err, ex.message === 'Failed to fetch' ? "Can't reach Duolign right now. Please try again." : ex.message);
@@ -158,7 +168,10 @@
         }
       },
     }, el('label', { for: 'r-code', class: 'r-label', text: 'Voucher code' }), input,
-      code ? null : el('p', { class: 'form-note', text: "It's in the email your voucher came in, starting DUOLIGN-." }), button);
+      code ? null : el('p', { class: 'form-note', text: "It's in the email your voucher came in, starting DUOLIGN-." }),
+      el('label', { class: 'r-check', for: 'r-optin' }, optIn,
+        el('span', { text: 'Email me news and offers from Duolign. Optional; turn it off any time in the app’s Settings.' })),
+      button);
     show(
       el('p', {}, 'Signed in as ', el('strong', { text: session.user.email || 'your account' }), '. ',
         el('button', { type: 'button', class: 'r-link', text: 'Not you?', onclick: signOut })),
