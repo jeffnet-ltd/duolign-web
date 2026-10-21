@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email confirmed — Duolign</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css?v=20260930">
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img class="mark" src="assets/mark.png" alt="">
+      Duolign
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="legal-hero">
+    <div class="wrap col">
+      <h2 style="margin-top:14px" id="ec-title">Email change</h2>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="wrap col">
+      <p id="ec-text">Checking your link…</p>
+      <p>Questions? Email <a class="inline" href="mailto:support@duolign.co.uk">support@duolign.co.uk</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+    <p class="co">Duolign is a trading name of JeffNet Ltd, a company registered in England &amp; Wales (company no. 16842613). &copy; 2026 JeffNet Ltd.</p>
+  </div>
+</footer>
+
+<script>
+// Where Supabase sends the links from an in-app email change (Settings ›
+// Profile & Accounts › Email). Both the current and the new address get a
+// link; the change happens once both are opened. Supabase reports the
+// outcome in the URL fragment -- read once, then wiped from the address
+// bar, since a completed change also carries a sign-in token there that
+// this page never uses.
+(function () {
+  const params = new URLSearchParams(location.hash.slice(1));
+  history.replaceState(null, '', location.pathname);
+  const title = document.getElementById('ec-title');
+  const text = document.getElementById('ec-text');
+  const error = params.get('error_description');
+  const message = params.get('message') || '';
+  if (error) {
+    title.textContent = 'That link didn’t work';
+    text.textContent = error.replace(/\+/g, ' ') + '. Links expire after a while, so start the change again from Settings in the app.';
+  } else if (/other email/i.test(message)) {
+    title.textContent = 'One link done, one to go';
+    text.textContent = 'Now open the link we sent to your other email address. Your email changes once both are confirmed.';
+  } else {
+    title.textContent = 'Your email has changed';
+    text.textContent = 'Both links are confirmed. Next time you sign in to Duolign, use your new email address.';
+  }
+})();
+</script>
+</body>
+</html>
