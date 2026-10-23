@@ -164,6 +164,7 @@ header {
   background: var(--raise);
 }
 .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.tag { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em; color: var(--accent); padding: 2px 8px; border: 1px solid var(--accent); border-radius: 999px; }
 .hero h1 { margin-top: 22px; }
 .hero .lede { margin-top: 20px; font-size: 1.16rem; color: var(--ink-2); max-width: 33em; }
 
