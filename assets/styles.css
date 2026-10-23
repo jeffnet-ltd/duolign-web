@@ -1,7 +1,6 @@
-/* Duolign marketing site -- shared styles. Tokens mirror the app's own
-   design language (frontend/src/index.css in the Couple_finance_app repo):
-   dark-first, the blue->indigo->violet accent gradient, monospace for
-   every money figure, a slate text ramp.
+/* Duolign marketing site -- shared styles, on the app's "Two of you" design
+   system: solid teal, one family (Instrument Sans) with tabular figures for
+   money, partner colours only as small marks.
 
    Referenced everywhere as assets/styles.css?v=<date> (site.js the same
    way) -- GitHub Pages/Fastly cache each file independently for 10
@@ -10,56 +9,74 @@
    one alongside a fresh copy of the other for up to that long. Bump the
    ?v= date on every HTML page when either file changes. */
 
+/* "Two of you" design system (2026-10-23): the same tokens as the app
+   (Couple_finance_app design-system/tokens.json). One brand colour (teal),
+   partner colours only as small marks, no gradients. Light is the base and
+   dark follows the visitor's device; the same values as the app's themes. */
 :root {
-  --ground: #F7F8FA;
-  --ground-2: #FFFFFF;
-  --raise: rgba(15, 23, 42, 0.028);
-  --raise-strong: rgba(15, 23, 42, 0.045);
-  --edge: #E4E7ED;
-  --edge-soft: #EDEFF3;
-  --ink: #10131A;
-  --ink-2: #4B5263;
-  --ink-3: #8A909E;
-  --accent-a: #0284C7;
-  --accent-b: #5457E6;
-  --accent-c: #8B24DE;
-  --good: #059669;
-  --grad: linear-gradient(120deg, var(--accent-a) 0%, var(--accent-b) 54%, var(--accent-c) 100%);
-  --shadow: 0 1px 2px rgba(16, 19, 26, 0.05), 0 12px 32px -12px rgba(16, 19, 26, 0.12);
+  --ground: #f5f7f6;
+  --ground-2: #ffffff;
+  --raise: #ffffff;
+  --raise-strong: #e6eeec;
+  --edge: #dbe3e1;
+  --edge-soft: #e6eeec;
+  --edge-strong: #76857f;
+  --ink: #13201e;
+  --ink-2: #4a5b57;
+  --ink-3: #5f6e6a;
+  --teal: #1e5f5a;
+  --on-teal: #ffffff;
+  --accent: #1e5f5a;
+  --partner-a: #2a64ad;
+  --partner-b: #6a4ab0;
+  --good: #2f7a35;
+  --danger: #b42d22;
+  --shadow: 0 1px 2px rgba(19, 32, 30, 0.05), 0 12px 32px -14px rgba(19, 32, 30, 0.14);
+  color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ground: #0A0A11;
-    --ground-2: #0E0F17;
-    --raise: rgba(255, 255, 255, 0.035);
-    --raise-strong: rgba(255, 255, 255, 0.055);
-    --edge: #20222E;
-    --edge-soft: #191B24;
-    --ink: #F1F4F9;
-    --ink-2: #A7AEBD;
-    --ink-3: #6A7180;
-    --accent-a: #38BDF8;
-    --accent-b: #6366F1;
-    --accent-c: #9333EA;
-    --good: #34D399;
-    --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+    --ground: #0f1615;
+    --ground-2: #162120;
+    --raise: #162120;
+    --raise-strong: #1e2d2b;
+    --edge: #26332f;
+    --edge-soft: #1e2d2b;
+    --edge-strong: #667a75;
+    --ink: #e9f0ee;
+    --ink-2: #a8b8b4;
+    --ink-3: #8b9d98;
+    --teal: #2f7f77;
+    --on-teal: #ffffff;
+    --accent: #7cc4b8;
+    --partner-a: #6aa6ec;
+    --partner-b: #b99cec;
+    --good: #9bd48a;
+    --danger: #f2917f;
+    --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --ground: #0A0A11;
-  --ground-2: #0E0F17;
-  --raise: rgba(255, 255, 255, 0.035);
-  --raise-strong: rgba(255, 255, 255, 0.055);
-  --edge: #20222E;
-  --edge-soft: #191B24;
-  --ink: #F1F4F9;
-  --ink-2: #A7AEBD;
-  --ink-3: #6A7180;
-  --accent-a: #38BDF8;
-  --accent-b: #6366F1;
-  --accent-c: #9333EA;
-  --good: #34D399;
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+  --ground: #0f1615;
+  --ground-2: #162120;
+  --raise: #162120;
+  --raise-strong: #1e2d2b;
+  --edge: #26332f;
+  --edge-soft: #1e2d2b;
+  --edge-strong: #667a75;
+  --ink: #e9f0ee;
+  --ink-2: #a8b8b4;
+  --ink-3: #8b9d98;
+  --teal: #2f7f77;
+  --on-teal: #ffffff;
+  --accent: #7cc4b8;
+  --partner-a: #6aa6ec;
+  --partner-b: #b99cec;
+  --good: #9bd48a;
+  --danger: #f2917f;
+  --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -68,7 +85,7 @@ body {
   margin: 0;
   background: var(--ground);
   color: var(--ink);
-  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -80,20 +97,20 @@ body {
 .col { max-width: 660px; }
 
 h1, h2, h3 {
-  font-family: "Bricolage Grotesque", "Hanken Grotesk", sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.021em;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -0.025em;
   text-wrap: balance;
   margin: 0;
   color: var(--ink);
 }
 h1 { font-size: clamp(2.35rem, 6.4vw, 3.65rem); line-height: 1.04; }
-h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.1; font-weight: 700; }
-h3 { font-size: 1.06rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.12; font-weight: 600; }
+h3 { font-size: 1.06rem; font-weight: 600; letter-spacing: -0.01em; }
 p { margin: 0; }
 a { color: inherit; }
 
-.mono { font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: normal; }
+.mono { font-variant-numeric: tabular-nums; }
 
 .eyebrow {
   font-weight: 600;
@@ -105,26 +122,25 @@ a { color: inherit; }
   align-items: center;
   gap: 9px;
 }
-.eyebrow::before { content: ""; width: 18px; height: 2px; background: var(--grad); border-radius: 2px; }
+.eyebrow::before { content: ""; width: 18px; height: 2px; background: var(--accent); border-radius: 2px; }
 
-.grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* Kept for existing markup: the headline accent is now solid teal, never a gradient. */
+.grad-text { color: var(--accent); }
 
 /* ---- top bar (every page) ---- */
 header {
   position: sticky; top: 0; z-index: 20;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  background: color-mix(in srgb, var(--ground) 78%, transparent);
+  background: var(--ground);
   border-bottom: 1px solid var(--edge-soft);
 }
 .bar { display: flex; align-items: center; justify-content: space-between; height: 62px; }
-.brand { display: flex; align-items: center; gap: 10px; font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.12rem; letter-spacing: -0.01em; text-decoration: none; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1.12rem; letter-spacing: -0.01em; text-decoration: none; }
 .mark { width: 26px; height: 26px; flex: none; }
 .bar-cta {
   font: inherit; font-size: 0.9rem; font-weight: 600;
   text-decoration: none;
-  padding: 8px 15px; border-radius: 9px;
-  border: 1px solid var(--edge);
+  padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--edge-strong);
   color: var(--ink);
   transition: border-color .15s ease, background .15s ease;
 }
@@ -147,7 +163,7 @@ header {
   border-radius: 999px;
   background: var(--raise);
 }
-.badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 22%, transparent); }
+.badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 .hero h1 { margin-top: 22px; }
 .hero .lede { margin-top: 20px; font-size: 1.16rem; color: var(--ink-2); max-width: 33em; }
 
@@ -156,24 +172,24 @@ form.signup input {
   flex: 1 1 220px;
   font: inherit; font-size: 16px;
   padding: 13px 15px;
-  border-radius: 11px;
-  border: 1px solid var(--edge);
+  border-radius: 12px;
+  border: 1px solid var(--edge-strong);
   background: var(--ground-2);
   color: var(--ink);
 }
 form.signup input::placeholder { color: var(--ink-3); }
-form.signup input:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+form.signup input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .signup-research { flex-basis: 100%; display: flex; gap: 9px; flex-wrap: wrap; margin-top: 2px; }
 form.signup select {
   flex: 1 1 200px;
   font: inherit; font-size: 14px;
   padding: 11px 13px;
-  border-radius: 11px;
-  border: 1px solid var(--edge);
+  border-radius: 12px;
+  border: 1px solid var(--edge-strong);
   background: var(--ground-2);
   color: var(--ink-2);
 }
-form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+form.signup select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---- two-step signup: step divs render as plain flex children of
    form.signup (so every rule above just keeps working), Step 2 stays
@@ -197,21 +213,21 @@ form.signup select:focus-visible { outline: 2px solid var(--accent-b); outline-o
 .btn-skip:hover { color: var(--ink-2); }
 .btn-primary {
   font: inherit; font-weight: 600; font-size: 1rem;
-  color: #fff;
-  padding: 13px 22px;
-  border: 0; border-radius: 11px;
-  background: var(--grad);
-  background-size: 140% 140%;
+  color: var(--on-teal);
+  padding: 13px 24px;
+  border: 0; border-radius: 999px;
+  background: var(--teal);
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
   transition: transform .12s ease, filter .15s ease, opacity .15s ease;
 }
 .btn-primary:hover { filter: brightness(1.06); }
 .btn-primary:active { transform: translateY(1px); }
 .btn-primary:disabled { opacity: .6; cursor: default; }
-.btn-primary:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 2px; }
+.btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .form-note { margin-top: 12px; font-size: 0.82rem; color: var(--ink-3); }
-.form-error { margin-top: 12px; font-size: 0.85rem; color: #dc2626; }
+.form-error { margin-top: 12px; font-size: 0.9rem; color: var(--danger); }
 .form-done {
   margin-top: 30px;
   padding: 15px 17px;
@@ -234,15 +250,15 @@ form.delete-form { margin-top: 24px; display: flex; flex-direction: column; gap:
 form.delete-form input, form.delete-form textarea {
   font: inherit; font-size: 16px;
   padding: 13px 15px;
-  border-radius: 11px;
-  border: 1px solid var(--edge);
+  border-radius: 12px;
+  border: 1px solid var(--edge-strong);
   background: var(--ground-2);
   color: var(--ink);
   resize: vertical;
 }
 form.delete-form textarea { min-height: 90px; }
 form.delete-form input::placeholder, form.delete-form textarea::placeholder { color: var(--ink-3); }
-form.delete-form input:focus-visible, form.delete-form textarea:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 1px; border-color: transparent; }
+form.delete-form input:focus-visible, form.delete-form textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 form.delete-form .btn-primary { align-self: flex-start; }
 
 .hero-shot { margin: 46px 0 8px; }
@@ -263,15 +279,15 @@ form.delete-form .btn-primary { align-self: flex-start; }
 .ledger-head .s { font-size: 0.8rem; color: var(--ink-3); }
 .row { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 13px; padding: 13px 20px; border-bottom: 1px solid var(--edge-soft); }
 .row:last-child { border-bottom: 0; }
-.row .n { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: var(--ink-3); text-align: center; }
+.row .n { font-variant-numeric: tabular-nums; font-size: 0.78rem; color: var(--ink-3); text-align: center; }
 .row .lbl { color: var(--ink-2); font-size: 0.95rem; }
-.row .amt { font-family: "IBM Plex Mono", monospace; font-size: 0.95rem; color: var(--ink); letter-spacing: -0.01em; }
+.row .amt { font-variant-numeric: tabular-nums; font-size: 0.95rem; color: var(--ink); letter-spacing: -0.01em; }
 .row.settled { background: color-mix(in srgb, var(--good) 7%, transparent); }
 .row.settled .lbl, .row.settled .amt { color: var(--ink); }
 .row.settled .n { color: var(--good); }
 .tick { width: 15px; height: 15px; display: block; margin: 0 auto; }
 .ledger-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 20px; background: var(--raise-strong); font-size: 0.9rem; }
-.ledger-foot .zero { font-family: "IBM Plex Mono", monospace; font-weight: 500; color: var(--good); }
+.ledger-foot .zero { font-variant-numeric: tabular-nums; font-weight: 500; color: var(--good); }
 
 /* ---- sections ---- */
 section.block { padding: 62px 0; border-top: 1px solid var(--edge-soft); }
@@ -281,7 +297,7 @@ section.block .intro { color: var(--ink-2); font-size: 1.08rem; max-width: 34em;
 
 ul.points { list-style: none; padding: 0; margin: 28px 0 0; display: flex; flex-direction: column; gap: 20px; }
 ul.points li { display: grid; grid-template-columns: 20px 1fr; gap: 14px; }
-ul.points li svg { margin-top: 4px; color: var(--accent-b); flex: none; }
+ul.points li svg { margin-top: 4px; color: var(--accent); flex: none; }
 ul.points .h { font-weight: 600; color: var(--ink); }
 ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .step-num {
@@ -290,7 +306,7 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
   border-radius: 50%;
   background: var(--raise);
   border: 1px solid var(--edge);
-  font-family: "IBM Plex Mono", monospace;
+  font-variant-numeric: tabular-nums;
   font-size: 0.68rem; font-weight: 600;
   color: var(--ink-2);
 }
@@ -298,7 +314,7 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .compare { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 460px; }
 .compare .c { border: 1px solid var(--edge); border-radius: 12px; padding: 14px 15px; background: var(--raise); }
 .compare .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
-.compare .v { font-family: "IBM Plex Mono", monospace; font-size: 1.15rem; margin-top: 6px; color: var(--ink); }
+.compare .v { font-variant-numeric: tabular-nums; font-size: 1.15rem; margin-top: 6px; color: var(--ink); }
 .compare .m { font-size: 0.8rem; color: var(--ink-2); margin-top: 3px; }
 
 /* ---- closing ---- */
@@ -314,15 +330,15 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 
 .plans { margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 620px; }
 .plan { border: 1px solid var(--edge); border-radius: 16px; padding: 22px 20px; background: var(--raise); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
-.plan.featured { border-color: color-mix(in srgb, var(--accent-b) 45%, var(--edge)); background: var(--raise-strong); position: relative; }
+.plan.featured { border-color: var(--accent); position: relative; }
 .plan .save {
   position: absolute; top: -11px; right: 18px;
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em; color: #fff;
-  background: var(--grad); padding: 4px 10px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em; color: var(--on-teal);
+  background: var(--teal); padding: 4px 10px; border-radius: 8px;
 }
 .plan .name { font-weight: 600; font-size: 0.92rem; color: var(--ink-2); }
 .plan .price { display: flex; align-items: baseline; gap: 6px; }
-.plan .price .amt { font-family: "IBM Plex Mono", monospace; font-size: 2.1rem; color: var(--ink); letter-spacing: -0.02em; }
+.plan .price .amt { font-variant-numeric: tabular-nums; font-size: 2.1rem; color: var(--ink); letter-spacing: -0.02em; }
 .plan .price .per { font-size: 0.92rem; color: var(--ink-3); }
 .plan .vat { font-size: 0.78rem; color: var(--ink-3); margin-top: -8px; }
 .plan .works-out { font-size: 0.82rem; color: var(--ink-2); }
@@ -338,11 +354,11 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .vouchers { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 700px; }
 .voucher { border: 1px solid var(--edge); border-radius: 12px; padding: 16px 15px; background: var(--raise); }
 .voucher .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); }
-.voucher .v { font-family: "IBM Plex Mono", monospace; font-size: 1.28rem; margin-top: 8px; color: var(--ink); }
+.voucher .v { font-variant-numeric: tabular-nums; font-size: 1.28rem; margin-top: 8px; color: var(--ink); }
 .voucher .m { font-size: 0.82rem; color: var(--ink-2); margin-top: 4px; }
 .voucher .btn-primary {
   display: block; width: 100%; margin-top: 14px;
-  padding: 9px 12px; font-size: 0.85rem; border-radius: 9px;
+  padding: 10px 12px; font-size: 0.88rem; border-radius: 999px;
   text-align: center; text-decoration: none;
 }
 
@@ -361,13 +377,13 @@ ul.points .d { color: var(--ink-2); font-size: 0.98rem; margin-top: 2px; }
 .legal-body p, .legal-body li { color: var(--ink-2); font-size: 0.98rem; }
 .legal-body p + p { margin-top: 12px; }
 .legal-body ul, .legal-body ol { padding-left: 22px; margin: 10px 0; display: flex; flex-direction: column; gap: 8px; }
-.legal-body a.inline { color: var(--accent-b); text-decoration: underline; text-underline-offset: 2px; }
+.legal-body a.inline { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 .legal-body strong { color: var(--ink); }
 .legal-toc { margin: 26px 0 0; padding: 16px 18px; border: 1px solid var(--edge); border-radius: 12px; background: var(--raise); }
 .legal-toc .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 10px; }
 .legal-toc ol { margin: 0; padding-left: 18px; gap: 4px; }
 .legal-toc a { color: var(--ink-2); text-decoration: none; font-size: 0.92rem; }
-.legal-toc a:hover { color: var(--accent-b); text-decoration: underline; }
+.legal-toc a:hover { color: var(--accent); text-decoration: underline; }
 .callout {
   margin: 20px 0; padding: 14px 16px;
   border: 1px solid color-mix(in srgb, var(--good) 35%, var(--edge));

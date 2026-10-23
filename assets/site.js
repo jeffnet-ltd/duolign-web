@@ -43,7 +43,7 @@ function wireSignupForm(form) {
     const email = (input.value || '').trim();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       input.focus();
-      input.style.borderColor = '#dc2626';
+      input.style.borderColor = 'var(--danger)';
       return null;
     }
     input.style.borderColor = '';
@@ -125,7 +125,7 @@ function wireDeletionForm(form) {
     const email = (emailInput.value || '').trim();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       emailInput.focus();
-      emailInput.style.borderColor = '#dc2626';
+      emailInput.style.borderColor = 'var(--danger)';
       return null;
     }
     emailInput.style.borderColor = '';

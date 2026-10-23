@@ -10,8 +10,8 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="assets/styles.css?v=20260930">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/styles.css?v=20261023">
 <style>
   /* Redeem page only. Uses the site's own tokens from styles.css. */
   #redeem-app { display: flex; flex-direction: column; gap: 14px; max-width: 460px; }
@@ -19,7 +19,7 @@
   .r-check { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: var(--ink-2); cursor: pointer; }
   .r-check input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; }
   /* The site's .legal-body paragraph colour would otherwise win over .form-error. */
-  #redeem-app .form-error { color: #dc2626; font-weight: 500; }
+  #redeem-app .form-error { color: var(--danger); font-weight: 500; }
   #redeem-app form.delete-form { margin-top: 0; }
   .r-label { font-size: 0.85rem; color: var(--ink-2); }
   .r-row { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -28,9 +28,9 @@
   .btn-secondary { font: inherit; font-weight: 600; font-size: 0.95rem; padding: 12px 20px; border-radius: 11px; border: 1px solid var(--edge); background: var(--ground-2); color: var(--ink); cursor: pointer; }
   .btn-secondary:hover { background: var(--raise-strong); }
   .btn-secondary:disabled { opacity: .6; cursor: default; }
-  .btn-secondary:focus-visible { outline: 2px solid var(--accent-b); outline-offset: 2px; }
+  .btn-secondary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .r-google { align-self: flex-start; }
-  .r-link { background: none; border: 0; padding: 0; font: inherit; color: var(--accent-b); text-decoration: underline; cursor: pointer; align-self: flex-start; }
+  .r-link { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; align-self: flex-start; }
   #redeem-app input[type=text] { font-family: "IBM Plex Mono", ui-monospace, monospace; text-transform: uppercase; }
 </style>
 </head>
@@ -75,6 +75,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="assets/redeem.js?v=20261021a"></script>
+<script src="assets/redeem.js?v=20261023"></script>
 </body>
 </html>
