@@ -102,9 +102,16 @@
   .p-note-row input { flex: 1 1 200px; padding: 7px 10px !important; }
   .p-note-text { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--ink); cursor: text; text-align: left; overflow-wrap: anywhere; }
   .p-note-empty { font-weight: 500; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
-  .p-dialog { border: 0; border-radius: 20px; padding: 24px; background: var(--raise); color: var(--ink); display: flex; flex-direction: column; gap: 12px; width: min(340px, calc(100vw - 32px)); }
-  .p-dialog:not([open]) { display: none; }
-  .p-dialog::backdrop { background: rgba(10, 16, 15, 0.55); }
+  .p-present { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; padding: 0;
+    background: var(--ground); color: var(--ink); }
+  .p-present:not([open]) { display: none; }
+  .p-present::backdrop { background: var(--ground); }
+  .p-present__body { box-sizing: border-box; min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); text-align: center; }
+  .p-present__from { color: var(--ink-2); font-size: 1rem; }
+  .p-present__head { margin: 0; font-size: 1.6rem; }
+  .p-present .p-qr { width: min(62vmin, 420px); padding: 14px; }
+  .p-present__code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 1.1rem; letter-spacing: 0.04em; color: var(--ink); overflow-wrap: anywhere; }
 
   .p-btn--quiet { border-color: var(--edge); color: var(--ink-2); font-weight: 500; }
   .p-btn--danger { border-color: var(--danger); background: var(--danger); color: var(--ground); }
@@ -194,6 +201,6 @@
 
 <div id="print-sheet" aria-hidden="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
-<script src="assets/partner.js?v=20261030b"></script>
+<script src="assets/partner.js?v=20261030c"></script>
 </body>
 </html>
