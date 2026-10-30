@@ -19,25 +19,17 @@ const client = (window.supabase && SUPABASE_URL.startsWith('https://'))
 
 document.querySelectorAll('#yr').forEach((el) => { el.textContent = String(new Date().getFullYear()); });
 
-// Two-step flow: step 1 (email only) reveals step 2 (the 3 optional
-// research selects + the feedback-chat checkbox) client-side -- no
-// Supabase write happens until step 2 actually completes (either its
-// own submit, or Skip). Exactly one insert either way, so the RLS
-// policy stays anon-insert-only with no UPDATE ever needed.
+// The waitlist: an email address, saved straight away (2026-10-30; the
+// optional research questions that used to follow it are gone). One
+// insert, so the RLS policy stays anon-insert-only.
 function wireSignupForm(form) {
   if (!form) return;
   const source = form.dataset.source || 'landing';
   const note = document.getElementById(form.id + '-note');
   const error = document.getElementById(form.id + '-error');
   const done = document.getElementById(form.id + '-done');
-  const step1 = form.querySelector('.signup-step1');
-  const step2 = form.querySelector('.signup-step2');
   const input = form.querySelector('input[type=email]');
-  const skipBtn = step2.querySelector('[data-action=skip]');
-  const partnerStatus = form.querySelector('select[name=partner_status]');
-  const splitStyle = form.querySelector('select[name=split_style]');
-  const currentTools = form.querySelector('select[name=current_tools]');
-  const feedbackOptIn = form.querySelector('input[name=feedback_opt_in]');
+  const button = form.querySelector('button[type=submit]');
 
   function validEmail() {
     const email = (input.value || '').trim();
@@ -50,54 +42,29 @@ function wireSignupForm(form) {
     return email;
   }
 
-  async function finish(includeExtras, triggerBtn) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
     const email = validEmail();
     if (!email) return;
     if (error) error.hidden = true;
     if (!client) {
-      if (error) { error.hidden = false; error.textContent = "Couldn't reach the sign-up list — please try again shortly."; }
+      if (error) { error.hidden = false; error.textContent = "Couldn't reach the sign-up list. Please try again shortly."; }
       return;
     }
-    const originalText = triggerBtn.textContent;
-    triggerBtn.disabled = true;
-    triggerBtn.textContent = 'Joining…';
-    // The 3 research selects + the checkbox are optional (no
-    // `required`) -- an unset select submits '' as its value,
-    // normalised to null so the column stays genuinely empty rather
-    // than storing an empty string. Skip sends every optional field
-    // as null/false regardless of any partial selection made before
-    // it was clicked -- "skip" means skip, not "whatever's there".
-    const { error: dbError } = await client.from('beta_signups').insert({
-      email,
-      source,
-      partner_status: includeExtras ? (partnerStatus?.value || null) : null,
-      split_style: includeExtras ? (splitStyle?.value || null) : null,
-      current_tools: includeExtras ? (currentTools?.value || null) : null,
-      feedback_opt_in: includeExtras ? Boolean(feedbackOptIn?.checked) : null,
-    });
-    triggerBtn.disabled = false;
-    triggerBtn.textContent = originalText;
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Joining…';
+    const { error: dbError } = await client.from('beta_signups').insert({ email, source });
+    button.disabled = false;
+    button.textContent = originalText;
     if (dbError) {
-      if (error) { error.hidden = false; error.textContent = "Something went wrong — please try again."; }
+      if (error) { error.hidden = false; error.textContent = 'Something went wrong. Please try again.'; }
       return;
     }
     form.hidden = true;
     if (note) note.hidden = true;
     if (done) done.hidden = false;
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (step2.hidden) {
-      if (!validEmail()) return;
-      step1.hidden = true;
-      step2.hidden = false;
-      return;
-    }
-    finish(true, step2.querySelector('button[type=submit]'));
   });
-
-  skipBtn.addEventListener('click', () => finish(false, skipBtn));
 }
 
 wireSignupForm(document.getElementById('join'));
