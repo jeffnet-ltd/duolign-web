@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Partner page — Duolign</title>
-<meta name="description" content="Sign in to send your complimentary Duolign Premium vouchers to clients.">
+<title>Partner dashboard — Duolign</title>
+<meta name="description" content="Sign in to hand out your Duolign Premium vouchers and see how they're doing.">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -14,35 +14,121 @@
 <link rel="stylesheet" href="assets/styles.css?v=20261030">
 <script src="assets/theme.js?v=20261023d"></script>
 <style>
-  /* Partner page only. Uses the site's own tokens from styles.css. */
-  /* Our display rules below would otherwise override the hidden attribute. */
+  /* Partner dashboard only (2026-10-30). Uses the site's own tokens from styles.css. */
   #partner-app [hidden] { display: none !important; }
-  /* The site's .legal-body paragraph colour would otherwise win over .form-error. */
-  #partner-app .form-error { color: var(--danger); font-weight: 500; }
-  #partner-app { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
-  #partner-app h3 { margin: 0; font-size: 1.35rem; }
-  #partner-app h4 { margin: 14px 0 0; font-size: 1rem; }
+  #partner-app .form-error { color: var(--danger); font-weight: 500; margin: 0; }
+  .legal-body .col.p-wide { max-width: 1040px; }
+  #partner-app { display: flex; flex-direction: column; gap: 22px; }
+  #partner-app h3 { margin: 0; font-size: 1.4rem; }
+  #partner-app h4 { margin: 0; font-size: 1.05rem; color: var(--ink); }
+  #partner-app h5 { margin: 0; font-size: 0.95rem; color: var(--ink); }
   #partner-app ul { margin: 0; padding-left: 1.2em; color: var(--ink-2); }
   #partner-app li { margin: 4px 0; }
-  .p-label { font-size: 0.85rem; color: var(--ink-2); }
-  .p-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .p-link { background: none; border: 0; padding: 0; font: inherit; font-size: 0.85rem; color: var(--accent); text-decoration: underline; cursor: pointer; align-self: flex-start; }
-  .p-note { padding: 12px 14px; border-radius: 11px; background: var(--raise-strong); color: var(--ink-2); font-size: 0.9rem; }
+  #partner-app p { margin: 0; }
+  #partner-app input[type=text], #partner-app input[type=email], #partner-app input[type=search], #partner-app select {
+    font: inherit; font-size: 16px; padding: 11px 13px; border-radius: 11px; border: 1px solid var(--edge);
+    background: var(--ground); color: var(--ink); min-width: 0; }
+  #partner-app input:focus-visible, #partner-app select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .p-narrow { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
+  .p-form { display: flex; flex-direction: column; gap: 10px; max-width: 420px; }
+  .p-label { font-size: 0.85rem; color: var(--ink-2); font-weight: 500; }
+  .p-muted { color: var(--ink-3); }
+  .p-small { font-size: 0.85rem; }
+  .p-center { text-align: center; }
+  .p-link { background: none; border: 0; padding: 0; font: inherit; font-size: 0.9rem; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; align-self: flex-start; }
   .p-check { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: var(--ink-2); cursor: pointer; }
   .p-check input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; }
-  .p-card { border: 1px solid var(--edge); border-radius: 14px; padding: 14px; background: var(--ground-2); display: flex; flex-direction: column; gap: 8px; }
-  .p-card.p-redeemed { border-color: color-mix(in srgb, var(--good) 45%, var(--edge)); }
-  .p-card.p-expired, .p-card.p-revoked { opacity: 0.6; }
-  .p-code { margin: 0; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.95rem; letter-spacing: 0.02em; word-break: break-all; }
-  .p-status { margin: 0; font-size: 0.85rem; color: var(--ink-2); overflow-wrap: anywhere; }
-  .p-redeemed .p-status { color: var(--good); }
-  form.p-send { display: flex; flex-wrap: wrap; gap: 8px; }
-  form.p-send input { flex: 1 1 220px; min-width: 0; font: inherit; font-size: 16px; padding: 11px 13px; border-radius: 11px; border: 1px solid var(--edge); background: var(--ground); color: var(--ink); }
-  form.p-send input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
-  .p-card .form-error { margin: 0; }
-  .p-hint { flex-basis: 100%; margin: 0; font-size: 0.8rem; color: var(--ink-3); }
-  .p-disc-head { margin: 0 0 6px; font-weight: 600; }
-  #partner-app .p-disc-code { margin: 0 0 8px; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 1.15rem; letter-spacing: 0.04em; color: var(--ink); user-select: all; }
+  .p-code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.9rem; letter-spacing: 0.03em; overflow-wrap: anywhere; color: var(--ink-2); }
+
+  .p-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .p-top > div { display: flex; flex-direction: column; gap: 4px; }
+
+  /* At a glance */
+  .p-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .p-tile { display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 16px; background: var(--raise); border: 1px solid var(--edge-soft); }
+  .p-tile__label { font-size: 0.8rem; color: var(--ink-3); font-weight: 500; }
+  .p-tile__value { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .p-tile__detail { font-size: 0.8rem; color: var(--ink-2); line-height: 1.35; }
+
+  .p-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .p-side { display: flex; flex-direction: column; gap: 16px; }
+  .p-panel { display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 18px; background: var(--raise); border: 1px solid var(--edge-soft); }
+  .p-panel__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .p-actions, .p-inline { display: flex; flex-wrap: wrap; gap: 8px; }
+  .p-inline input { flex: 1 1 200px; }
+  .p-btn { font: inherit; font-size: 0.95rem; font-weight: 600; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--edge-strong); background: transparent; color: var(--ink); }
+  .p-btn:hover { background: var(--raise-strong); }
+  .p-btn:disabled { opacity: 0.5; cursor: default; }
+  .p-btn--small { font-size: 0.85rem; padding: 7px 12px; }
+  .p-result { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; border-top: 1px solid var(--edge-soft); }
+  .p-ok { color: var(--good); font-weight: 500; }
+  .p-linkfield { width: 100%; font-family: "IBM Plex Mono", ui-monospace, monospace !important; font-size: 14px !important; }
+  .p-qr { align-self: center; width: 220px; max-width: 100%; background: #fff; padding: 10px; border-radius: 12px; }
+  .p-qr svg { display: block; width: 100%; height: auto; }
+
+  .p-discount { padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--good) 12%, transparent); color: var(--ink); font-size: 0.92rem; }
+  .p-packs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .p-pack { display: flex; flex-direction: column; gap: 2px; padding: 12px; border-radius: 14px; border: 1px solid var(--edge); text-decoration: none; color: var(--ink); background: var(--ground); }
+  .p-pack:hover { border-color: var(--accent); }
+  .p-pack__size { font-size: 0.8rem; color: var(--ink-3); }
+  .p-pack__price { font-size: 1.2rem; font-weight: 600; }
+  .p-pack__each { font-size: 0.75rem; color: var(--ink-2); }
+
+  /* The list */
+  .p-list { display: flex; flex-direction: column; gap: 14px; }
+  .p-list__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .p-list__head input { flex: 0 1 280px; }
+  .p-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .p-chip { font: inherit; font-size: 0.85rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--edge); background: transparent; color: var(--ink-2); cursor: pointer; }
+  .p-chip[aria-selected="true"] { background: var(--teal); border-color: var(--teal); color: var(--on-teal); }
+  .p-pack-group { display: flex; flex-direction: column; gap: 8px; }
+  .p-group__head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; padding-top: 6px; }
+  ul.p-rows { list-style: none; padding: 0 !important; margin: 0; border: 1px solid var(--edge-soft); border-radius: 16px; overflow: hidden; background: var(--raise); }
+  .p-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; margin: 0 !important; border-top: 1px solid var(--edge-soft); }
+  .p-row:first-child { border-top: 0; }
+  .p-row__main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .p-row__status { font-size: 0.85rem; color: var(--ink-2); overflow-wrap: anywhere; }
+  .p-row--redeemed .p-row__status, .p-row--held .p-row__status { color: var(--good); }
+  .p-row--expired, .p-row--revoked { opacity: 0.6; }
+  .p-row__shared { font-size: 0.8rem; color: var(--ink-2); overflow-wrap: anywhere; }
+  .p-row__code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.78rem; color: var(--ink-3); letter-spacing: 0.03em; }
+  .p-row__actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .p-ready { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; border-radius: 16px;
+    border: 1px dashed var(--edge); background: transparent; color: var(--ink-2); font: inherit; font-size: 0.9rem; cursor: pointer; text-align: left; }
+  .p-ready:hover { border-color: var(--accent); }
+  .p-ready__show { color: var(--accent); font-weight: 600; }
+  .p-note-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .p-note-row input { flex: 1 1 200px; padding: 7px 10px !important; }
+  .p-note-text { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--ink); cursor: text; text-align: left; overflow-wrap: anywhere; }
+  .p-note-empty { font-weight: 500; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+  .p-dialog { border: 0; border-radius: 20px; padding: 24px; background: var(--raise); color: var(--ink); display: flex; flex-direction: column; gap: 12px; width: min(340px, calc(100vw - 32px)); }
+  .p-dialog:not([open]) { display: none; }
+  .p-dialog::backdrop { background: rgba(10, 16, 15, 0.55); }
+
+  @media (max-width: 860px) {
+    .p-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .p-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .p-packs { grid-template-columns: minmax(0, 1fr); }
+    .p-row { flex-direction: column; align-items: flex-start; }
+    .p-row__actions { justify-content: flex-start; }
+    .p-top { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Printing: only the voucher sheet. */
+  #print-sheet { display: none; }
+  @media print {
+    body > *:not(#print-sheet) { display: none !important; }
+    #print-sheet { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10mm; padding: 10mm; color: #13201e; background: #fff; }
+    .ps-card { break-inside: avoid; border: 1px dashed #76857f; border-radius: 4mm; padding: 6mm; display: flex; flex-direction: column; gap: 2mm; align-items: center; text-align: center; font-family: "Instrument Sans", sans-serif; }
+    .ps-brand { font-weight: 700; font-size: 14pt; margin: 0; }
+    .ps-head { font-size: 11pt; margin: 0; }
+    .ps-card .p-qr { width: 40mm; padding: 0; }
+    .ps-code { font-family: "IBM Plex Mono", monospace; font-size: 11pt; letter-spacing: 0.04em; margin: 0; }
+    .ps-small { font-size: 8.5pt; color: #4a5b57; margin: 0; }
+  }
 </style>
 </head>
 <body>
@@ -60,13 +146,13 @@
   <section class="legal-hero">
     <div class="wrap col">
       <span class="eyebrow">Partner businesses</span>
-      <h2 style="margin-top:14px">Your partner page</h2>
+      <h2 style="margin-top:14px">Your partner dashboard</h2>
       <p class="updated">Give your clients a head start on running their money together</p>
     </div>
   </section>
 
   <section class="legal-body">
-    <div class="wrap col">
+    <div class="wrap col p-wide">
       <div id="partner-app" aria-live="polite">
         <noscript><p>This page needs JavaScript switched on.</p></noscript>
       </div>
@@ -87,6 +173,8 @@
   </div>
 </footer>
 
-<script src="assets/partner.js?v=20261023"></script>
+<div id="print-sheet" aria-hidden="true"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="assets/partner.js?v=20261030"></script>
 </body>
 </html>

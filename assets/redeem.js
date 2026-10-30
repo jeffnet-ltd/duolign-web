@@ -136,6 +136,31 @@
     // Marketing opt-in (stage 8): unticked unless they tick it; sent only
     // once the voucher has gone through.
     const optIn = el('input', { type: 'checkbox', id: 'r-optin' });
+    // "Let <business> know it was me" (2026-10-30): only for a voucher from a
+    // partner business, unticked unless the client ticks it. Only then does
+    // the business see their email against the voucher it gave them.
+    const share = el('input', { type: 'checkbox', id: 'r-share' });
+    const shareText = el('span');
+    const shareRow = el('label', { class: 'r-check', for: 'r-share', hidden: true }, share, shareText);
+    let lookedUp = '';
+    async function lookUpBusiness() {
+      const c = input.value.trim().toUpperCase();
+      if (!c || c === lookedUp) return;
+      lookedUp = c;
+      try {
+        const r = await fetch(`${API}/vouchers/${encodeURIComponent(c)}/from`);
+        const d = r.ok ? await r.json() : null;
+        if (d && d.business_name && input.value.trim().toUpperCase() === c) {
+          shareText.textContent = `Let ${d.business_name} know it was me. Optional: they'll see your email address next to the voucher they gave you.`;
+          shareRow.hidden = false;
+        } else {
+          shareRow.hidden = true;
+          share.checked = false;
+        }
+      } catch { /* the box just stays hidden */ }
+    }
+    input.addEventListener('change', lookUpBusiness);
+    input.addEventListener('blur', lookUpBusiness);
     const form = el('form', {
       class: 'delete-form', novalidate: true,
       onsubmit: async (e) => {
@@ -148,7 +173,7 @@
           const resp = await fetch(`${API}/vouchers/redeem`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-            body: JSON.stringify({ code }),
+            body: JSON.stringify({ code, share_with_partner: !shareRow.hidden && share.checked }),
           });
           const data = await resp.json().catch(() => null);
           if (resp.status === 401) return renderSignIn('Your session has ended. Please sign in again.', 'signin');
@@ -168,7 +193,8 @@
         }
       },
     }, el('label', { for: 'r-code', class: 'r-label', text: 'Voucher code' }), input,
-      code ? null : el('p', { class: 'form-note', text: "It's in the email your voucher came in, starting DUOLIGN-." }),
+      code ? null : el('p', { class: 'form-note', text: "It's on your voucher or in the email it came in, starting DUOLIGN-." }),
+      shareRow,
       el('label', { class: 'r-check', for: 'r-optin' }, optIn,
         el('span', { text: 'Email me news and offers from Duolign. Optional; turn it off any time in the app’s Settings.' })),
       button);
@@ -177,6 +203,7 @@
         el('button', { type: 'button', class: 'r-link', text: 'Not you?', onclick: signOut })),
       form, err,
     );
+    lookUpBusiness();
   }
 
   function renderDone(status) {
