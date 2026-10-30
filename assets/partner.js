@@ -16,6 +16,21 @@
     { size: 25, price: 675, each: 27, url: 'https://buy.stripe.com/dRm4gy1Ftd1T8yI87S53O04' },
     { size: 50, price: 1200, each: 24, url: 'https://buy.stripe.com/bJe28q5VJd1T9CM4VG53O05' },
   ];
+  // Self-serve sign-up categories (server: partner_service.CATEGORIES).
+  const CATEGORIES = [
+    ['ifa_mortgage_broker', 'Independent financial adviser / mortgage broker'],
+    ['accountant', 'Accountant / tax adviser'],
+    ['wedding_planner', 'Wedding planner'],
+    ['wedding_venue_celebrant', 'Wedding venue / celebrant'],
+    ['estate_agent', 'Estate agent'],
+    ['family_solicitor_mediator', 'Family solicitor / mediator'],
+    ['employer_benefits', 'Employer / employee-benefits consultant'],
+    ['housebuilder', 'Housebuilder / new-build developer'],
+    ['relationship_counsellor', 'Relationship counsellor / premarital educator'],
+    ['relocation', 'Relocation specialist'],
+  ];
+  const TERMS_VERSION = '2026-10-30';
+  const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const NOTE_LIMIT = 120;
   const PAGE = 20;
 
@@ -105,7 +120,7 @@
       onsubmit: async (e) => {
         e.preventDefault();
         setError(err, '');
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input.value.trim())) return setError(err, 'Enter the email address your business was enrolled with.');
+        if (!EMAIL_RE.test(input.value.trim())) return setError(err, 'Enter the email address you use for your dashboard.');
         button.disabled = true;
         try {
           const r = await call('/sign-in-link', { method: 'POST', body: { email: input.value.trim() } });
@@ -121,10 +136,75 @@
     },
     el('label', { for: 'partner-email', class: 'p-label', text: 'Your business email' }), input, button);
     show(el('div', { class: 'p-narrow' },
-      el('p', { text: "Sign in to hand out your Duolign Premium vouchers and see how they're doing. Use the email address your business was enrolled with, and we'll email you a one-time link. No password needed." }),
+      el('p', { text: "Sign in to hand out your Duolign Premium vouchers and see how they're doing. Use your business's email address, or the one a colleague added you with, and we'll email you a one-time link. No password needed." }),
       message ? el('p', { class: 'form-error', text: message }) : null,
       form, err, done,
+      el('p', { class: 'p-switch' }, 'New to Duolign vouchers? ',
+        el('button', { type: 'button', class: 'p-link', text: 'Set up a dashboard', onclick: () => renderSignUp() })),
     ));
+  }
+
+  // -- Sign up (a business buying packs; no free vouchers) --------------------
+  function renderSignUp() {
+    const field = (id, label, attrs, hint) => {
+      const input = el('input', { id, ...attrs });
+      return [input, el('div', { class: 'p-field' },
+        el('label', { for: id, class: 'p-label', text: label }), input,
+        hint ? el('span', { class: 'p-muted p-small', text: hint }) : null)];
+    };
+    const [biz, bizField] = field('su-business', 'Business name', { type: 'text', maxlength: '120', autocomplete: 'organization', required: true });
+    const category = el('select', { id: 'su-category', required: true },
+      el('option', { value: '', text: 'Choose one' }), ...CATEGORIES.map(([k, label]) => el('option', { value: k, text: label })));
+    const [name, nameField] = field('su-name', 'Your name', { type: 'text', maxlength: '120', autocomplete: 'name', required: true });
+    const [email, emailField] = field('su-email', 'Business email', { type: 'email', autocomplete: 'email', required: true },
+      "We'll email a link here to open your dashboard. You can add colleagues later.");
+    const [postcode, postcodeField] = field('su-postcode', 'Postcode (optional)', { type: 'text', maxlength: '8', autocomplete: 'postal-code' });
+    const box = el('input', { type: 'checkbox', id: 'su-terms' });
+    const err = errorLine();
+    const done = el('div', { class: 'form-done', hidden: true });
+    const button = el('button', { type: 'submit', class: 'btn-primary', text: 'Set up my dashboard' });
+    const form = el('form', {
+      class: 'p-form p-form--stack', novalidate: true,
+      onsubmit: async (e) => {
+        e.preventDefault();
+        setError(err, '');
+        if (!biz.value.trim()) return setError(err, 'Enter your business name.');
+        if (!category.value) return setError(err, 'Choose what kind of business you are.');
+        if (!name.value.trim()) return setError(err, 'Enter your name.');
+        if (!EMAIL_RE.test(email.value.trim())) return setError(err, 'Enter your business email address.');
+        if (!box.checked) return setError(err, 'Please tick the box to confirm you agree to the terms.');
+        button.disabled = true;
+        try {
+          const r = await call('/sign-up', { method: 'POST', body: {
+            business_name: biz.value, category: category.value, contact_name: name.value,
+            email: email.value.trim(), postcode: postcode.value.trim() || null, terms_version: TERMS_VERSION,
+          } });
+          form.hidden = true;
+          done.textContent = `${r.message} Check your inbox at ${email.value.trim()}.`;
+          done.hidden = false;
+        } catch (ex) {
+          setError(err, ex.message);
+        } finally {
+          button.disabled = false;
+        }
+      },
+    },
+    bizField,
+    el('div', { class: 'p-field' }, el('label', { for: 'su-category', class: 'p-label', text: 'What kind of business are you?' }), category),
+    nameField, emailField, postcodeField,
+    el('label', { class: 'p-check', for: 'su-terms' }, box,
+      el('span', {}, 'I agree to the ', el('a', { class: 'inline', href: 'partner-terms.html', target: '_blank', rel: 'noopener', text: 'Partner Business Programme Terms' }),
+        ' on behalf of my business, and have read how Duolign uses business contact details in the ',
+        el('a', { class: 'inline', href: 'privacy.html#businesses', target: '_blank', rel: 'noopener', text: 'Privacy Policy' }), '.')),
+    button);
+    show(el('div', { class: 'p-narrow' },
+      el('h3', { text: 'Set up your partner dashboard' }),
+      el('p', { text: "It's free and takes a minute. Then buy voucher packs by card and hand them out to your clients however suits you. Your dashboard shows which have been redeemed." }),
+      form, err, done,
+      el('p', { class: 'p-switch' }, 'Already have a dashboard? ',
+        el('button', { type: 'button', class: 'p-link', text: 'Sign in', onclick: () => renderSignIn() })),
+    ));
+    biz.focus();
   }
 
   // -- Terms -----------------------------------------------------------------
@@ -194,7 +274,7 @@
     if (!v) {
       card.append(
         el('h4', { id: 'handout-title', text: 'Hand out a voucher' }),
-        el('p', { class: 'p-muted', text: "You've handed out every voucher. Buy a pack below to keep going." }),
+        el('p', { class: 'p-muted', text: me.vouchers.length ? "You've handed out every voucher. Buy a pack to keep going." : 'Buy your first pack and your vouchers appear here, ready to hand out.' }),
       );
       return card;
     }
@@ -260,7 +340,7 @@
       e.preventDefault();
       setError(err, '');
       const email = emailInput.value.trim();
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError(err, "Enter your client's email address.");
+      if (!EMAIL_RE.test(email)) return setError(err, "Enter your client's email address.");
       if (!window.confirm(`Email this voucher to ${email}?\n\nOnly send it if they've agreed to receive it. It will only work for that address.`)) return;
       emailSend.disabled = true;
       try {
@@ -303,7 +383,7 @@
         el('span', { class: 'p-pack__size', text: `${p.size} vouchers` }),
         el('span', { class: 'p-pack__price', text: money(discount ? p.price * 0.8 : p.price) }),
         el('span', { class: 'p-pack__each', text: discount ? `was ${money(p.price)} · ${money(p.each * 0.8)} each` : `${money(p.each)} each` })))),
-      el('p', { class: 'p-muted p-small', text: 'Each voucher gives one couple a full year of Premium. Prices exclude VAT. Vouchers you buy appear here straight away, ready to hand out.' }),
+      el('p', { class: 'p-muted p-small', text: 'Each voucher gives one couple a full year of Premium. The price you see is the price you pay, with a receipt by email. Vouchers you buy appear here straight away, ready to hand out. Unused vouchers can be refunded within 14 days of buying: email support@duolign.co.uk.' }),
     );
   }
 
@@ -401,6 +481,9 @@
         el('button', { type: 'button', class: 'p-btn p-btn--small', text: 'QR code', onclick: () => openQr(v) }),
       );
     }
+    if (v.state === 'handed_out') {
+      actions.append(el('button', { type: 'button', class: 'p-btn p-btn--small p-btn--quiet', text: 'Take back', onclick: (e) => takeBack(v, e.target) }));
+    }
     return el('li', { class: `p-row p-row--${v.state}` },
       el('div', { class: 'p-row__main' },
         noteEditor(v),
@@ -408,6 +491,23 @@
         v.redeemed_by ? el('p', { class: 'p-row__shared', text: `Your client let you know it was them: ${v.redeemed_by}` }) : null,
         el('p', { class: 'p-row__code', text: v.code })),
       actions);
+  }
+
+  // Cancels a handed-out voucher nobody has redeemed and puts a fresh one in
+  // the pack: a client who changed their mind, or a link sent to the wrong
+  // person.
+  async function takeBack(v, button) {
+    const who = v.note ? ` from ${v.note}` : '';
+    if (!window.confirm(`Take this voucher back${who}?\n\nIts code stops working straight away and a fresh voucher goes back in your pack.`)) return;
+    button.disabled = true;
+    try {
+      await call(`/vouchers/${encodeURIComponent(v.code)}/take-back`, { method: 'POST' });
+      load();
+    } catch (ex) {
+      button.disabled = false;
+      if (ex.status === 401) return signOut(ex.message);
+      window.alert(ex.message);
+    }
   }
 
   function openHandOut(v) {
@@ -475,18 +575,126 @@
     return section;
   }
 
+  // -- Account: team, emails, your data --------------------------------------
+  function teamPanel() {
+    const err = errorLine();
+    const rows = el('ul', { class: 'p-team' },
+      el('li', {}, el('span', { class: 'p-team__who', text: me.email }), el('span', { class: 'p-muted p-small', text: 'Main contact' })),
+      ...me.team.map((m) => el('li', {},
+        el('span', { class: 'p-team__who' }, m.name ? el('span', { text: m.name }) : null, el('span', m.name ? { class: 'p-muted p-small', text: m.email } : { text: m.email })),
+        me.is_main_contact
+          ? el('button', { type: 'button', class: 'p-link', text: 'Remove', onclick: async () => {
+            if (!window.confirm(`Remove ${m.email}? They'll be signed out straight away.`)) return;
+            try { await call(`/team/${encodeURIComponent(m.id)}`, { method: 'DELETE' }); load(); } catch (ex) { handleError(ex, err); }
+          } })
+          : null)));
+    let add = null;
+    if (me.is_main_contact) {
+      const email = el('input', { type: 'email', placeholder: 'colleague@yourbusiness.co.uk', 'aria-label': "Colleague's email" });
+      const name = el('input', { type: 'text', maxlength: '120', placeholder: 'Name (optional)', 'aria-label': "Colleague's name" });
+      add = el('form', { class: 'p-inline p-inline--wrap', novalidate: true, onsubmit: async (e) => {
+        e.preventDefault();
+        setError(err, '');
+        if (!EMAIL_RE.test(email.value.trim())) return setError(err, "Enter your colleague's email address.");
+        try {
+          await call('/team', { method: 'POST', body: { email: email.value.trim(), name: name.value.trim() || null } });
+          load();
+        } catch (ex) { handleError(ex, err); }
+      } }, email, name, el('button', { type: 'submit', class: 'p-btn', text: 'Add' }));
+    }
+    return el('div', { class: 'p-acct' },
+      el('h5', { text: 'Who can sign in' }),
+      el('p', { class: 'p-muted p-small', text: me.is_main_contact
+        ? 'Add colleagues so they can hand out vouchers too. They sign in with their own email, and everyone sees the same vouchers and notes.'
+        : `Only ${me.email} can change who has access.` }),
+      rows, add, err);
+  }
+
+  function emailsPanel() {
+    const box = el('input', { type: 'checkbox', id: 'summary-emails', checked: me.summary_emails });
+    const err = errorLine();
+    box.addEventListener('change', async () => {
+      setError(err, '');
+      try {
+        const r = await call('/settings', { method: 'PUT', body: { summary_emails: box.checked } });
+        me.summary_emails = r.summary_emails;
+      } catch (ex) { box.checked = !box.checked; handleError(ex, err); }
+    });
+    return el('div', { class: 'p-acct' },
+      el('h5', { text: 'Emails' }),
+      el('label', { class: 'p-check', for: 'summary-emails' }, box,
+        el('span', { text: `Email ${me.email} a short summary on the 1st of each month: vouchers handed out and redeemed.` })),
+      err);
+  }
+
+  function dataPanel() {
+    const err = errorLine();
+    const download = el('button', { type: 'button', class: 'p-btn', text: 'Download your data', onclick: async () => {
+      setError(err, '');
+      try {
+        const data = await call('/export');
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const a = el('a', { href: URL.createObjectURL(blob), download: `duolign-partner-data-${new Date().toISOString().slice(0, 10)}.json` });
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      } catch (ex) { handleError(ex, err); }
+    } });
+    const confirmBox = el('div', { class: 'p-leave', hidden: true });
+    const leaveBtn = el('button', { type: 'button', class: 'p-btn p-btn--quiet', text: 'Leave the programme', onclick: () => {
+      leaveBtn.hidden = true;
+      confirmBox.hidden = false;
+    } });
+    const erase = el('input', { type: 'checkbox', id: 'leave-erase' });
+    const confirmLeave = el('button', { type: 'button', class: 'p-btn p-btn--danger', text: 'Leave now', onclick: async () => {
+      setError(err, '');
+      confirmLeave.disabled = true;
+      try {
+        await call('/leave', { method: 'POST', body: { erase: erase.checked } });
+        memorySession = null;
+        store.clear();
+        show(el('div', { class: 'p-narrow' },
+          el('h3', { text: erase.checked ? "You've left, and your details are deleted" : "You've left the programme" }),
+          el('p', { text: erase.checked
+            ? "We've deleted your contact details, team and notes. We keep the record of what you bought for six years, as the law requires, without your contact details. Couples who already redeemed a voucher keep their Premium."
+            : "Your dashboard is closed and vouchers you hadn't handed out are cancelled. Couples who already redeemed one keep their Premium. Email support@duolign.co.uk if you'd like to come back." })));
+      } catch (ex) { confirmLeave.disabled = false; handleError(ex, err); }
+    } });
+    confirmBox.append(
+      el('p', { class: 'p-small', text: "Leaving closes this dashboard for everyone on your team, and vouchers you haven't handed out stop working. Couples who already redeemed one keep their Premium. Download your data first if you'd like a copy." }),
+      el('label', { class: 'p-check', for: 'leave-erase' }, erase,
+        el('span', { class: 'p-small', text: 'Also delete my business details (contact name, email, postcode, team and voucher notes). Purchase records are kept for six years for tax, without contact details.' })),
+      el('div', { class: 'p-inline' }, confirmLeave,
+        el('button', { type: 'button', class: 'p-link', text: 'Cancel', onclick: () => { confirmBox.hidden = true; leaveBtn.hidden = false; } })));
+    return el('div', { class: 'p-acct' },
+      el('h5', { text: 'Your data' }),
+      el('p', { class: 'p-muted p-small' }, 'Download everything we hold about your business, or leave the programme. ',
+        el('a', { class: 'inline', href: 'privacy.html#businesses', target: '_blank', rel: 'noopener', text: 'How we use business details' }), '.'),
+      el('div', { class: 'p-inline p-inline--wrap' }, download, me.is_main_contact ? leaveBtn : null),
+      me.is_main_contact ? confirmBox : el('p', { class: 'p-muted p-small', text: `Only ${me.email} can close this dashboard.` }),
+      err);
+  }
+
+  function accountSection() {
+    return el('section', { class: 'p-account', 'aria-labelledby': 'account-title' },
+      el('h4', { id: 'account-title', text: 'Your account' }),
+      el('div', { class: 'p-account__grid' }, teamPanel(), emailsPanel(), dataPanel()));
+  }
+
   function render() {
     show(
       el('div', { class: 'p-top' },
         el('div', {},
           el('h3', { text: me.business_name }),
-          el('p', { class: 'p-muted p-small', text: `Signed in as ${me.email}` })),
+          el('p', { class: 'p-muted p-small', text: `Signed in as ${me.signed_in_as || me.email}` })),
         el('button', { type: 'button', class: 'p-link', text: 'Sign out', onclick: () => signOut() })),
       statTiles(),
       el('div', { class: 'p-grid' },
         el('div', { id: 'handout-slot' }, handOutPanel()),
         el('div', { class: 'p-side' }, buyCard(), printCard())),
-      voucherList(),
+      me.vouchers.length ? voucherList() : null,
+      accountSection(),
       el('p', { class: 'form-note' }, 'Each voucher is for one couple: give it to one of them, and their partner gets Premium too when they join the household in the app. Questions: ',
         el('a', { class: 'inline', href: 'mailto:support@duolign.co.uk', text: 'support@duolign.co.uk' })),
     );
@@ -499,7 +707,7 @@
   }
 
   async function load() {
-    if (!session()) return renderSignIn();
+    if (!session()) return new URLSearchParams(location.search).has('start') ? renderSignUp() : renderSignIn();
     try {
       me = await call('/me');
       return me.terms_accepted ? render() : renderTerms(me);

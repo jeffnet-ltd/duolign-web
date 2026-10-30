@@ -106,9 +106,28 @@
   .p-dialog:not([open]) { display: none; }
   .p-dialog::backdrop { background: rgba(10, 16, 15, 0.55); }
 
+  .p-btn--quiet { border-color: var(--edge); color: var(--ink-2); font-weight: 500; }
+  .p-btn--danger { border-color: var(--danger); background: var(--danger); color: var(--ground); }
+  .p-btn--danger:hover { background: var(--danger); filter: brightness(1.08); }
+  .p-switch { font-size: 0.9rem; color: var(--ink-2); }
+  .p-switch .p-link { font-size: inherit; }
+  .p-form--stack { gap: 14px; max-width: 480px; }
+  .p-field { display: flex; flex-direction: column; gap: 6px; }
+
+  /* Your account */
+  .p-account { display: flex; flex-direction: column; gap: 14px; padding-top: 8px; border-top: 1px solid var(--edge-soft); }
+  .p-account__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .p-acct { display: flex; flex-direction: column; gap: 10px; padding: 18px; border-radius: 16px; background: var(--raise); border: 1px solid var(--edge-soft); min-width: 0; }
+  ul.p-team { list-style: none; padding: 0 !important; display: flex; flex-direction: column; gap: 6px; }
+  .p-team li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 !important; font-size: 0.9rem; color: var(--ink); }
+  .p-team__who { display: flex; flex-direction: column; overflow-wrap: anywhere; min-width: 0; }
+  .p-inline--wrap input { flex: 1 1 160px; }
+  .p-leave { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 12px; border: 1px solid var(--danger); }
+
   @media (max-width: 860px) {
     .p-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .p-grid { grid-template-columns: minmax(0, 1fr); }
+    .p-account__grid { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 480px) {
     .p-packs { grid-template-columns: minmax(0, 1fr); }
@@ -175,6 +194,6 @@
 
 <div id="print-sheet" aria-hidden="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
-<script src="assets/partner.js?v=20261030"></script>
+<script src="assets/partner.js?v=20261030b"></script>
 </body>
 </html>
