@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/styles.css?v=20261023d">
+<link rel="stylesheet" href="assets/styles.css?v=20261030">
 <script src="assets/theme.js?v=20261023d"></script>
 </head>
 <body>
@@ -145,43 +145,8 @@
       <span class="eyebrow beta-status" style="justify-content:center">Duolign Early Access &mdash; inviting 50 UK couples &middot; free during the closed beta</span>
       <h2 style="margin-top:16px">Get your household aligned.</h2>
       <form class="signup" id="join" novalidate data-source="pricing">
-        <div class="signup-step1">
-          <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
-          <button type="submit" class="btn-primary">Join the waitlist</button>
-        </div>
-        <div class="signup-step2" hidden>
-          <p class="step2-intro">A couple of quick questions (optional) &mdash; helps us build the right thing.</p>
-          <select name="partner_status" aria-label="Are you currently managing household finances with a partner?">
-            <option value="">Managing finances with a partner?</option>
-            <option value="yes">Yes</option>
-            <option value="not_yet">Not yet, but moving in soon</option>
-            <option value="no">No</option>
-          </select>
-          <select name="split_style" aria-label="How do you currently split household expenses?">
-            <option value="">How do you split expenses?</option>
-            <option value="50_50">50/50 equal split</option>
-            <option value="proportional">Proportional to income</option>
-            <option value="one_person">One person pays most</option>
-            <option value="wing_it">We just wing it / mental arithmetic</option>
-            <option value="other">Other</option>
-          </select>
-          <select name="current_tools" aria-label="What do you currently use to manage shared money?">
-            <option value="">What do you use today?</option>
-            <option value="spreadsheet">Spreadsheet (Excel / Google Sheets)</option>
-            <option value="banking_app">Banking app</option>
-            <option value="splitwise">Splitwise</option>
-            <option value="notes">Notes app / WhatsApp</option>
-            <option value="nothing">Nothing</option>
-          </select>
-          <label class="checkbox-field">
-            <input type="checkbox" name="feedback_opt_in">
-            <span>Would you and your partner be open to a quick 15-minute feedback chat, in exchange for 3 months free once Duolign launches?</span>
-          </label>
-          <div class="signup-step2-actions">
-            <button type="submit" class="btn-primary">Join the waitlist</button>
-            <button type="button" class="btn-skip" data-action="skip">Skip</button>
-          </div>
-        </div>
+        <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
+        <button type="submit" class="btn-primary">Join the waitlist</button>
       </form>
       <p class="form-note" id="join-note">UK households only. We&rsquo;ll email you when we launch &mdash; nothing else.</p>
       <p class="form-error" id="join-error" hidden></p>
@@ -206,7 +171,7 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="assets/site.js?v=20261023"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script src="assets/site.js?v=20261030"></script>
 </body>
 </html>
