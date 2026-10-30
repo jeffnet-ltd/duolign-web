@@ -324,11 +324,12 @@
         if (!needNote()) return;
         try {
           const r = await call(`/vouchers/${encodeURIComponent(v.code)}/hand-out`, { method: 'POST', body: { via: 'qr', note: note.value } });
+          const shown = { code: r.code, note: r.note, redeem_link: r.redeem_link, duration_months: v.duration_months };
           finish(
-            el('p', { class: 'p-ok', text: `Ask ${r.note} to scan this with their phone's camera.` }),
-            qrSvg(r.redeem_link, 8) || el('p', { class: 'p-code', text: r.redeem_link }),
-            el('p', { class: 'p-code p-center', text: r.code }),
+            el('p', { class: 'p-ok', text: `QR code shown to ${r.note}.` }),
+            el('button', { type: 'button', class: 'p-btn', text: 'Show it again', onclick: () => presentQr(shown) }),
           );
+          presentQr(shown);
         } catch (ex) { handleError(ex, err); }
       },
     });
@@ -377,7 +378,7 @@
     return el('section', { class: 'p-panel', 'aria-labelledby': 'buy-title' },
       el('h4', { id: 'buy-title', text: 'Buy more vouchers' }),
       discount
-        ? el('p', { class: 'p-discount' }, el('strong', { text: '20% off your first pack' }), ` is applied for you: code ${me.discount_code}, until ${fmtDate(me.discount_deadline)}.`)
+        ? el('p', { class: 'p-discount' }, el('strong', { text: '20% off your first pack' }), ` is applied for you automatically when you buy here, until ${fmtDate(me.discount_deadline)}.`)
         : me.discount_used ? el('p', { class: 'p-muted', text: "You've used your 20% first-pack discount. Thank you!" }) : null,
       el('div', { class: 'p-packs' }, ...PACKS.map((p) => el('a', { class: 'p-pack', href: url(p), target: '_blank', rel: 'noopener' },
         el('span', { class: 'p-pack__size', text: `${p.size} vouchers` }),
@@ -478,7 +479,7 @@
           e.target.textContent = ok ? 'Copied' : 'Copy failed';
           setTimeout(() => { e.target.textContent = 'Copy link'; }, 1600);
         } }),
-        el('button', { type: 'button', class: 'p-btn p-btn--small', text: 'QR code', onclick: () => openQr(v) }),
+        el('button', { type: 'button', class: 'p-btn p-btn--small', text: 'QR code', onclick: () => presentQr(v) }),
       );
     }
     if (v.state === 'handed_out') {
@@ -518,12 +519,20 @@
     if (input) input.focus();
   }
 
-  function openQr(v) {
-    const dialog = el('dialog', { class: 'p-dialog', 'aria-label': `QR code for ${v.note || v.code}` },
-      el('p', { class: 'p-ok', text: v.note ? `For ${v.note}` : 'Scan to redeem' }),
-      qrSvg(v.redeem_link, 8),
-      el('p', { class: 'p-code p-center', text: v.code }),
-      el('button', { type: 'button', class: 'btn-primary', text: 'Close', onclick: () => { dialog.close(); dialog.remove(); } }));
+  // A QR code fills the screen on its own, because the screen is turned to
+  // the client: nothing else of the dashboard (the business's discount, other
+  // clients' names) shows behind it.
+  function presentQr(v) {
+    const close = () => { dialog.close(); dialog.remove(); };
+    const dialog = el('dialog', { class: 'p-present', 'aria-label': 'Voucher QR code' },
+      el('div', { class: 'p-present__body' },
+        el('p', { class: 'p-present__from', text: `${v.duration_months} months of Duolign Premium, from ${me.business_name}` }),
+        el('h3', { class: 'p-present__head', text: 'Scan with your phone’s camera' }),
+        qrSvg(v.redeem_link, 10) || el('p', { class: 'p-code', text: v.redeem_link }),
+        el('p', { class: 'p-present__code', text: v.code }),
+        el('p', { class: 'p-muted p-small', text: 'Or go to duolign.co.uk/redeem and enter the code. One voucher covers you both.' }),
+        el('button', { type: 'button', class: 'p-btn', text: 'Close', onclick: close })));
+    dialog.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
     document.body.append(dialog);
     dialog.showModal();
   }
