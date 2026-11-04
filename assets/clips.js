@@ -10,8 +10,8 @@
 (function () {
   var root = document.documentElement
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  var PAUSE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'
-  var PLAY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>'
+  var PAUSE = '<svg width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter"><path d="M9 5.5v13M15 5.5v13"/></svg>'
+  var PLAY = '<svg width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter"><path d="M7 8L7 4.5L19 12L7 19.5L7 10"/></svg>'
 
   function theme() {
     var set = root.getAttribute('data-theme')
