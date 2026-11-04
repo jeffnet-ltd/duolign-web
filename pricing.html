@@ -12,6 +12,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/styles.css?v=20261030">
 <script src="assets/theme.js?v=20261023d"></script>
+<style>
+  .biz-video { margin: 24px 0 8px; display: flex; flex-direction: column; gap: 8px; }
+  .biz-video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; border: 1px solid var(--edge-soft); background: var(--raise); }
+  .biz-video figcaption { color: var(--ink-2); font-size: 0.9rem; }
+</style>
 </head>
 <body>
 
@@ -116,6 +121,12 @@
           Share a link, show a QR code, print a card or have us email it in your name. Your dashboard shows which have been redeemed
         </li>
       </ul>
+
+      <figure class="biz-video">
+        <video src="assets/help/partner-sign-up.mp4" poster="assets/help/partner-sign-up.jpg" controls playsinline preload="none"
+          aria-label="Video: setting up a partner dashboard"></video>
+        <figcaption>Setting up your dashboard takes a minute. <a class="inline" href="partner.html">See how the dashboard works</a>.</figcaption>
+      </figure>
 
       <div class="vouchers">
         <div class="voucher">

@@ -144,6 +144,19 @@
   }
 
   /* Printing: only the voucher sheet. */
+  /* How the dashboard works: the partner help videos (2026-10-30). */
+  .hv { padding-top: 0; }
+  .hv-title { margin: 0 0 6px; font-size: 1.4rem; }
+  .hv-intro { margin: 0 0 18px; color: var(--ink-2); }
+  .hv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .hv-card { margin: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 10px 14px; border-radius: 16px;
+    background: var(--raise); border: 1px solid var(--edge-soft); min-width: 0; }
+  .hv-card video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; background: var(--ground); }
+  .hv-card figcaption { display: flex; flex-direction: column; gap: 2px; padding: 0 4px; }
+  .hv-card strong { color: var(--ink); font-size: 0.98rem; }
+  .hv-card span { color: var(--ink-2); font-size: 0.85rem; }
+  @media (max-width: 860px) { .hv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .hv-grid { grid-template-columns: minmax(0, 1fr); } }
   #print-sheet { display: none; }
   @media print {
     body > *:not(#print-sheet) { display: none !important; }
@@ -184,6 +197,50 @@
       </div>
     </div>
   </section>
+
+  <section class="legal-body hv" aria-labelledby="hv-title">
+    <div class="wrap col p-wide">
+      <h2 id="hv-title" class="hv-title">How the dashboard works</h2>
+      <p class="hv-intro">Short videos with sound and captions. Each one is under a minute.</p>
+      <div class="hv-grid">
+        <figure class="hv-card">
+          <video src="assets/help/partner-hand-out.mp4" poster="assets/help/partner-hand-out.jpg" controls playsinline preload="none"
+            aria-label="Video: Hand out a voucher"></video>
+          <figcaption><strong>Hand out a voucher</strong><span>Share a link, show a QR code, or have us email it.</span></figcaption>
+        </figure>
+        <figure class="hv-card">
+          <video src="assets/help/partner-sign-up.mp4" poster="assets/help/partner-sign-up.jpg" controls playsinline preload="none"
+            aria-label="Video: Set up your dashboard"></video>
+          <figcaption><strong>Set up your dashboard</strong><span>Free, and it takes a minute.</span></figcaption>
+        </figure>
+        <figure class="hv-card">
+          <video src="assets/help/partner-buy-and-print.mp4" poster="assets/help/partner-buy-and-print.jpg" controls playsinline preload="none"
+            aria-label="Video: Buy and print vouchers"></video>
+          <figcaption><strong>Buy and print vouchers</strong><span>Packs by card, and printed cards for welcome packs.</span></figcaption>
+        </figure>
+        <figure class="hv-card">
+          <video src="assets/help/partner-notes.mp4" poster="assets/help/partner-notes.jpg" controls playsinline preload="none"
+            aria-label="Video: Notes and redemptions"></video>
+          <figcaption><strong>Notes and redemptions</strong><span>Know who had which voucher, and when it was used.</span></figcaption>
+        </figure>
+        <figure class="hv-card">
+          <video src="assets/help/partner-take-back.mp4" poster="assets/help/partner-take-back.jpg" controls playsinline preload="none"
+            aria-label="Video: Take a voucher back"></video>
+          <figcaption><strong>Take a voucher back</strong><span>If it went to the wrong person, or they changed their mind.</span></figcaption>
+        </figure>
+        <figure class="hv-card">
+          <video src="assets/help/partner-team.mp4" poster="assets/help/partner-team.jpg" controls playsinline preload="none"
+            aria-label="Video: Add a colleague"></video>
+          <figcaption><strong>Add a colleague</strong><span>Let your team hand out vouchers too.</span></figcaption>
+        </figure>
+        <figure class="hv-card">
+          <video src="assets/help/partner-account.mp4" poster="assets/help/partner-account.jpg" controls playsinline preload="none"
+            aria-label="Video: Your account and data"></video>
+          <figcaption><strong>Your account and data</strong><span>Monthly emails, your data, and leaving.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -202,5 +259,11 @@
 <div id="print-sheet" aria-hidden="true"></div>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="assets/partner.js?v=20261030c"></script>
+<script>
+  // One help video at a time: starting one pauses any other.
+  document.querySelectorAll('.hv video').forEach((v) => v.addEventListener('play', () => {
+    document.querySelectorAll('.hv video').forEach((o) => { if (o !== v) o.pause() })
+  }))
+</script>
 </body>
 </html>
