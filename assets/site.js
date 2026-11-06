@@ -54,7 +54,8 @@ function wireSignupForm(form) {
     const originalText = button.textContent;
     button.disabled = true;
     button.textContent = 'Joining…';
-    const { error: dbError } = await client.from('beta_signups').insert({ email, source });
+    const updatesOptIn = form.querySelector('input[name=updates]')?.checked === true;
+    const { error: dbError } = await client.from('beta_signups').insert({ email, source, updates_opt_in: updatesOptIn });
     button.disabled = false;
     button.textContent = originalText;
     if (dbError) {
